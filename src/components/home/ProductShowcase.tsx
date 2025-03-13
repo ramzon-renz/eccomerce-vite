@@ -6,15 +6,16 @@ import FilterBar from "./FilterBar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import productData from "@/data/products.json";
+import type { ProductCardData, ProductData } from "@/types/product";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  material: string;
-  style: string;
+interface ProductShowcaseProps {
+  title?: string;
+  subtitle?: string;
+  products?: ProductCardData[];
+  onViewAll?: () => void;
+  filterCategory?: string;
+  searchQuery?: string;
 }
 
 interface FilterOptions {
@@ -23,95 +24,25 @@ interface FilterOptions {
   priceRange: string;
 }
 
-interface ProductShowcaseProps {
-  title?: string;
-  subtitle?: string;
-  products?: Product[];
-  onViewAll?: () => void;
-  filterCategory?: string;
-  searchQuery?: string;
-}
-
-const defaultProducts: Product[] = [
-  {
-    id: "1",
-    name: "Classic Oak Door",
-    price: 899.99,
-    description:
-      "Handcrafted solid oak door with premium finish and elegant design.",
-    image:
-      "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
-    material: "oak",
-    style: "traditional",
-  },
-  {
-    id: "2",
-    name: "Modern Walnut Entry Door",
-    price: 1299.99,
-    description:
-      "Contemporary walnut door with sleek lines and minimalist hardware.",
-    image:
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&q=80",
-    material: "walnut",
-    style: "modern",
-  },
-  {
-    id: "3",
-    name: "Rustic Pine Barn Door",
-    price: 749.99,
-    description:
-      "Authentic barn-style sliding door made from reclaimed pine wood.",
-    image:
-      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=500&q=80",
-    material: "pine",
-    style: "rustic",
-  },
-  {
-    id: "4",
-    name: "Craftsman Mahogany Door",
-    price: 1599.99,
-    description:
-      "Exquisite craftsman-style door with detailed woodwork and stained glass accents.",
-    image:
-      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=500&q=80",
-    material: "mahogany",
-    style: "craftsman",
-  },
-  {
-    id: "5",
-    name: "Contemporary Cherry Pocket Door",
-    price: 1099.99,
-    description:
-      "Space-saving pocket door crafted from premium cherry wood with modern hardware.",
-    image:
-      "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&q=80",
-    material: "cherry",
-    style: "contemporary",
-  },
-  {
-    id: "6",
-    name: "Traditional Oak French Doors",
-    price: 2199.99,
-    description:
-      "Elegant pair of French doors with tempered glass panels and solid oak frame.",
-    image:
-      "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80",
-    material: "oak",
-    style: "traditional",
-  },
-];
-
 const ProductShowcase = ({
   title = "Our Premium Collection",
   subtitle = "Discover our handcrafted wooden doors, each piece a testament to exceptional craftsmanship and timeless design.",
-  products = defaultProducts,
+  products = (productData as ProductData).products.map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    description: product.description,
+    image: product.images[0],
+    material: product.material.toLowerCase(),
+    style: product.style.toLowerCase()
+  })),
   onViewAll = () => console.log("View all products"),
   filterCategory = "",
   searchQuery = "",
 }: ProductShowcaseProps) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  const [filteredProducts, setFilteredProducts] = useState<ProductCardData[]>(products);
   const [activeFilters, setActiveFilters] = useState<FilterOptions>({
     material: "",
     style: "",
@@ -182,7 +113,7 @@ const ProductShowcase = ({
     }
 
     setFilteredProducts(result);
-  }, [products, activeFilters, filterCategory, searchQuery]);
+  }, [products, filterCategory, searchQuery, activeFilters]);
 
   const handleFilterChange = (filters: FilterOptions) => {
     setActiveFilters(filters);
@@ -257,7 +188,6 @@ const ProductShowcase = ({
                   style={product.style}
                   onView={() => navigate(`/products/${product.id}`)}
                   onAddToCart={() => {
-                    // Add to cart logic                    
                     addToCart({
                       id: product.id,
                       name: product.name,
@@ -292,9 +222,9 @@ const ProductShowcase = ({
         {/* View All Button */}
         <div className="text-center">
           <Button
-            onClick={() => navigate("/products")}
-            size="lg"
+            variant="outline"
             className="group"
+            onClick={onViewAll}
           >
             View All Products
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

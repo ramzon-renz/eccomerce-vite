@@ -3,87 +3,19 @@ import { useParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProductDetail from "@/components/product/ProductDetail";
-
-// Mock product data - in a real app, this would come from an API
-const products = [
-  {
-    id: "1",
-    name: "Classic Oak Door",
-    price: 899.99,
-    description:
-      "Handcrafted solid oak door with premium finish and elegant design.",
-    longDescription:
-      "Our Classic Oak Door represents the pinnacle of traditional craftsmanship. Each door is meticulously handcrafted from premium solid oak, known for its exceptional durability and timeless beauty. The natural grain patterns are enhanced with our proprietary finishing process, creating a warm, inviting appearance that will elevate any space in your home.",
-    images: [
-      "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
-      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
-      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80",
-    ],
-    material: "Oak",
-    style: "Classic",
-    dimensions: {
-      width: 36,
-      height: 80,
-      thickness: 1.75,
-    },
-  },
-  {
-    id: "2",
-    name: "Modern Walnut Entry Door",
-    price: 1299.99,
-    description:
-      "Contemporary walnut door with sleek lines and minimalist hardware.",
-    longDescription:
-      "Our Modern Walnut Entry Door combines contemporary design with exceptional craftsmanship. Made from premium walnut wood, this door features clean lines and a sophisticated finish that makes a bold statement. The minimalist hardware complements the door's modern aesthetic while providing secure, smooth operation.",
-    images: [
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
-      "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
-      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
-      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80",
-    ],
-    material: "Walnut",
-    style: "Modern",
-    dimensions: {
-      width: 36,
-      height: 80,
-      thickness: 1.75,
-    },
-  },
-  {
-    id: "3",
-    name: "Rustic Pine Barn Door",
-    price: 749.99,
-    description:
-      "Authentic barn-style sliding door made from reclaimed pine wood.",
-    longDescription:
-      "Our Rustic Pine Barn Door brings farmhouse charm to any space. Crafted from reclaimed pine wood, each door has unique character and patina that tells a story. The sliding barn door hardware provides smooth operation while adding an industrial accent to the rustic design.",
-    images: [
-      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
-      "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
-      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80",
-    ],
-    material: "Pine",
-    style: "Rustic",
-    dimensions: {
-      width: 42,
-      height: 84,
-      thickness: 1.5,
-    },
-  },
-];
+import productData from "@/data/products.json";
+import type { Product, ProductData } from "@/types/product";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Simulate API call to fetch product details
     setIsLoading(true);
     setTimeout(() => {
-      const foundProduct = products.find((p) => p.id === id) || products[0];
+      const foundProduct = (productData as ProductData).products.find((p) => p.id === id) || (productData as ProductData).products[0];
       setProduct(foundProduct);
       setIsLoading(false);
     }, 800);
@@ -109,6 +41,16 @@ const ProductDetailPage = () => {
             material={product.material}
             style={product.style}
             dimensions={product.dimensions}
+            features={product.features}
+            specifications={product.specifications}
+            relatedProducts={(productData as ProductData).products
+              .filter(p => p.id !== product.id)
+              .slice(0, 3)
+              .map(p => ({
+                id: p.id,
+                name: p.name,
+                image: p.images[0]
+              }))}
           />
         ) : (
           <div className="container mx-auto px-4 py-16 text-center">
