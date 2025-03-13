@@ -7,6 +7,8 @@ export interface Product {
   images: string[];
   material: string;
   style: string;
+  category: string;
+  type: string;
   dimensions: {
     width: number;
     height: number;
@@ -28,4 +30,6 @@ export interface ProductCardData {
   image: string;
   material: string;
   style: string;
+  category: string;
+  type: string;
 } 

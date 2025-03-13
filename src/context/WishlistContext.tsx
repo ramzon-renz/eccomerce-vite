@@ -7,6 +7,8 @@ interface WishlistItem {
   image: string;
   material?: string;
   style?: string;
+  category?: string;
+  type?: string;
 }
 
 interface WishlistContextType {

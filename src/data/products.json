@@ -6,6 +6,8 @@
       "price": 899.99,
       "description": "Handcrafted solid oak door with premium finish and elegant design.",
       "longDescription": "Our Classic Oak Door represents the pinnacle of traditional craftsmanship. Each door is meticulously handcrafted from premium solid oak, known for its exceptional durability and timeless beauty. The natural grain patterns are enhanced with our proprietary finishing process, creating a warm, inviting appearance that will elevate any space in your home.",
+      "category": "interior",
+      "type": "panel",
       "images": [
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
         "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
@@ -42,6 +44,8 @@
       "price": 1299.99,
       "description": "Contemporary walnut door with sleek lines and minimalist hardware.",
       "longDescription": "Our Modern Walnut Entry Door combines contemporary design with exceptional craftsmanship. Made from premium walnut wood, this door features clean lines and a sophisticated finish that makes a bold statement. The minimalist hardware complements the door's modern aesthetic while providing secure, smooth operation.",
+      "category": "exterior",
+      "type": "entry",
       "images": [
         "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
@@ -78,6 +82,8 @@
       "price": 749.99,
       "description": "Authentic barn-style sliding door made from reclaimed pine wood.",
       "longDescription": "Our Rustic Pine Barn Door brings farmhouse charm to any space. Crafted from reclaimed pine wood, each door has unique character and patina that tells a story. The sliding barn door hardware provides smooth operation while adding an industrial accent to the rustic design.",
+      "category": "interior",
+      "type": "barn",
       "images": [
         "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
@@ -114,6 +120,8 @@
       "price": 1599.99,
       "description": "Exquisite craftsman-style door with detailed woodwork and stained glass accents.",
       "longDescription": "Our Craftsman Mahogany Door is a masterpiece of traditional craftsmanship. Each door features intricate woodwork details and optional stained glass panels that create a stunning visual effect. The rich mahogany wood provides exceptional durability and a luxurious appearance that enhances any home's architectural style.",
+      "category": "interior",
+      "type": "panel",
       "images": [
         "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80",
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
@@ -150,6 +158,8 @@
       "price": 1099.99,
       "description": "Space-saving pocket door crafted from premium cherry wood with modern hardware.",
       "longDescription": "Our Contemporary Cherry Pocket Door combines elegant design with practical functionality. The smooth pocket door mechanism allows for maximum space utilization, while the premium cherry wood provides a warm, inviting appearance. Modern hardware and finishes create a sophisticated look that works well in contemporary homes.",
+      "category": "interior",
+      "type": "flush",
       "images": [
         "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80",
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
@@ -186,6 +196,8 @@
       "price": 2199.99,
       "description": "Elegant pair of French doors with tempered glass panels and solid oak frame.",
       "longDescription": "Our Traditional Oak French Doors bring classic European elegance to your home. Each pair features tempered glass panels that allow natural light to flow while maintaining privacy. The solid oak frame provides exceptional durability and a timeless appearance that enhances any architectural style.",
+      "category": "interior",
+      "type": "french",
       "images": [
         "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=80",
         "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
@@ -214,6 +226,234 @@
         "Insulation": "R-Value 5.5",
         "Weight": "85 lbs",
         "Installation": "Professional installation recommended"
+      }
+    },
+    {
+      "id": "7",
+      "name": "Modern Glass Patio Door",
+      "price": 1899.99,
+      "description": "Contemporary sliding patio door with energy-efficient glass panels and sleek aluminum frame.",
+      "longDescription": "Our Modern Glass Patio Door combines contemporary design with exceptional energy efficiency. The tempered glass panels provide excellent insulation while allowing natural light to flood your space. The sleek aluminum frame offers durability and a modern aesthetic that complements any home style.",
+      "category": "exterior",
+      "type": "patio",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Aluminum",
+      "style": "Modern",
+      "dimensions": {
+        "width": 72,
+        "height": 80,
+        "thickness": 2.5
+      },
+      "features": [
+        "Energy-efficient glass",
+        "Smooth sliding mechanism",
+        "Weather-resistant frame",
+        "Security lock system",
+        "Custom sizing available",
+        "15-year warranty"
+      ],
+      "specifications": {
+        "Material": "Aluminum Frame",
+        "Glass": "Double-Pane Tempered",
+        "Hardware": "Brushed Nickel",
+        "Insulation": "R-Value 6.2",
+        "Weight": "85 lbs",
+        "Installation": "Professional installation required"
+      }
+    },
+    {
+      "id": "8",
+      "name": "Classic Storm Door",
+      "price": 299.99,
+      "description": "Traditional storm door with full-view glass panel and brass hardware.",
+      "longDescription": "Our Classic Storm Door provides an additional layer of protection for your entry door while maintaining visibility. The full-view glass panel allows natural light to enter your home, while the brass hardware adds a touch of traditional elegance. Perfect for protecting your main entry door from the elements.",
+      "category": "exterior",
+      "type": "storm",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Aluminum",
+      "style": "Traditional",
+      "dimensions": {
+        "width": 36,
+        "height": 80,
+        "thickness": 1.5
+      },
+      "features": [
+        "Full-view glass panel",
+        "Brass hardware",
+        "Self-closing mechanism",
+        "Weather-resistant",
+        "Easy installation",
+        "5-year warranty"
+      ],
+      "specifications": {
+        "Material": "Aluminum Frame",
+        "Glass": "Tempered",
+        "Hardware": "Brass",
+        "Insulation": "R-Value 3.5",
+        "Weight": "15 lbs",
+        "Installation": "DIY friendly"
+      }
+    },
+    {
+      "id": "9",
+      "name": "Premium Security Door",
+      "price": 799.99,
+      "description": "Heavy-duty security door with reinforced steel frame and decorative wrought iron design.",
+      "longDescription": "Our Premium Security Door combines strength with style. The reinforced steel frame provides maximum security, while the decorative wrought iron design adds architectural interest. Perfect for homes requiring enhanced security without compromising on aesthetics.",
+      "category": "exterior",
+      "type": "security",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Steel",
+      "style": "Security",
+      "dimensions": {
+        "width": 36,
+        "height": 80,
+        "thickness": 2
+      },
+      "features": [
+        "Reinforced steel frame",
+        "Decorative wrought iron design",
+        "Multi-point locking system",
+        "Weather-resistant finish",
+        "Custom designs available",
+        "Lifetime warranty"
+      ],
+      "specifications": {
+        "Material": "Steel Frame",
+        "Finish": "Powder Coated",
+        "Hardware": "Security Grade",
+        "Lock Points": "3",
+        "Weight": "45 lbs",
+        "Installation": "Professional installation required"
+      }
+    },
+    {
+      "id": "10",
+      "name": "Contemporary Patio Door",
+      "price": 2499.99,
+      "description": "High-end folding patio door system with panoramic views and premium hardware.",
+      "longDescription": "Our Contemporary Patio Door system offers a seamless transition between indoor and outdoor living spaces. The folding mechanism allows for maximum opening width, while the premium hardware ensures smooth operation. Perfect for luxury homes seeking a modern, sophisticated look.",
+      "category": "exterior",
+      "type": "patio",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Aluminum",
+      "style": "Contemporary",
+      "dimensions": {
+        "width": 120,
+        "height": 96,
+        "thickness": 2.5
+      },
+      "features": [
+        "Folding door system",
+        "Panoramic glass panels",
+        "Premium hardware",
+        "Energy-efficient",
+        "Custom configurations",
+        "20-year warranty"
+      ],
+      "specifications": {
+        "Material": "Aluminum Frame",
+        "Glass": "Triple-Pane",
+        "Hardware": "Premium Bronze",
+        "Insulation": "R-Value 7.5",
+        "Weight": "150 lbs",
+        "Installation": "Professional installation required"
+      }
+    },
+    {
+      "id": "11",
+      "name": "Deluxe Storm Door",
+      "price": 399.99,
+      "description": "Premium storm door with retractable screen and decorative glass options.",
+      "longDescription": "Our Deluxe Storm Door offers enhanced functionality with a retractable screen and multiple glass panel options. The innovative design allows for easy ventilation while keeping insects out, and the decorative glass options add a touch of elegance to your entryway.",
+      "category": "exterior",
+      "type": "storm",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Aluminum",
+      "style": "Modern",
+      "dimensions": {
+        "width": 36,
+        "height": 80,
+        "thickness": 1.5
+      },
+      "features": [
+        "Retractable screen",
+        "Decorative glass options",
+        "Self-closing mechanism",
+        "Weather-resistant",
+        "Easy maintenance",
+        "10-year warranty"
+      ],
+      "specifications": {
+        "Material": "Aluminum Frame",
+        "Glass": "Tempered",
+        "Hardware": "Chrome",
+        "Insulation": "R-Value 4.0",
+        "Weight": "18 lbs",
+        "Installation": "DIY friendly"
+      }
+    },
+    {
+      "id": "12",
+      "name": "Heavy-Duty Security Door",
+      "price": 1299.99,
+      "description": "Maximum security door with advanced locking system and reinforced construction.",
+      "longDescription": "Our Heavy-Duty Security Door provides the highest level of protection for your home. The advanced multi-point locking system and reinforced steel construction make this door virtually impenetrable. Perfect for homes requiring maximum security without compromising on style.",
+      "category": "exterior",
+      "type": "security",
+      "images": [
+        "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
+        "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80"
+      ],
+      "material": "Steel",
+      "style": "Security",
+      "dimensions": {
+        "width": 36,
+        "height": 80,
+        "thickness": 2.5
+      },
+      "features": [
+        "Advanced locking system",
+        "Reinforced steel construction",
+        "Anti-pry design",
+        "Weather-resistant finish",
+        "Custom security features",
+        "Lifetime warranty"
+      ],
+      "specifications": {
+        "Material": "Steel Frame",
+        "Finish": "Powder Coated",
+        "Hardware": "Security Grade",
+        "Lock Points": "5",
+        "Weight": "65 lbs",
+        "Installation": "Professional installation required"
       }
     }
   ]

@@ -10,6 +10,7 @@ import {
 import { Badge } from "../../components/ui/badge";
 import { Eye, ShoppingCart, Heart } from "lucide-react";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/use-toast";
 
 interface ProductCardProps {
@@ -20,6 +21,8 @@ interface ProductCardProps {
   image?: string;
   material?: string;
   style?: string;
+  category?: string;
+  type?: string;
   onView?: () => void;
   onAddToCart?: () => void;
 }
@@ -27,20 +30,21 @@ interface ProductCardProps {
 const ProductCard = ({
   id = "1",
   name = "Classic Oak Door",
-  price = 599.99,
+  price = 899.99,
   description = "Handcrafted solid oak door with premium finish and elegant design.",
-  image = "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
+  image = "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
   material = "Oak",
   style = "Classic",
+  category = "interior",
+  type = "panel",
   onView = () => console.log("View product"),
   onAddToCart = () => console.log("Add to cart"),
 }: ProductCardProps) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
   const { toast } = useToast();
 
-  const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
+  const handleWishlistToggle = () => {
     if (isInWishlist(id)) {
       removeFromWishlist(id);
       toast({
@@ -55,6 +59,8 @@ const ProductCard = ({
         image,
         material,
         style,
+        category,
+        type,
       });
       toast({
         title: "Added to wishlist",
@@ -63,14 +69,6 @@ const ProductCard = ({
     }
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onAddToCart();
-    toast({
-      title: "Added to cart",
-      description: `${name} has been added to your cart`,
-    });
-  };
   return (
     <motion.div
       whileHover={{ y: -10 }}
@@ -84,12 +82,18 @@ const ProductCard = ({
             alt={name}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
-          <div className="absolute top-2 right-2 flex gap-1">
+          <div className="absolute top-2 right-2 flex flex-wrap gap-1">
             <Badge variant="secondary" className="bg-amber-100 text-amber-800">
               {material}
             </Badge>
             <Badge variant="outline" className="bg-white/80">
               {style}
+            </Badge>
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+              {category}
+            </Badge>
+            <Badge variant="outline" className="bg-white/80">
+              {type}
             </Badge>
           </div>
           <button
@@ -111,19 +115,39 @@ const ProductCard = ({
           <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
         </CardContent>
 
-        <CardFooter className="pt-2 flex gap-2">
+        <CardFooter className="flex gap-2">
           <Button
             variant="outline"
             size="sm"
-            className="flex-1 gap-1"
+            className="flex-1"
             onClick={onView}
           >
-            <Eye size={16} />
-            <span>View</span>
+            <Eye className="h-4 w-4 mr-2" />
+            View
           </Button>
-          <Button size="sm" className="flex-1 gap-1" onClick={handleAddToCart}>
-            <ShoppingCart size={16} />
-            <span>Add</span>
+          <Button
+            size="sm"
+            className="flex-1"
+            onClick={() => {
+              addToCart({
+                id: id,
+                name: name,
+                price: price,
+                image: image,
+                quantity: 1,
+                material: material,
+                style: style,
+                category: category,
+                type: type,
+              });
+              toast({
+                title: "Added to cart",
+                description: `${name} has been added to your cart`,
+              });
+            }}
+          >
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            Add to Cart
           </Button>
         </CardFooter>
       </Card>
