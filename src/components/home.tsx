@@ -42,7 +42,7 @@ const HomePage = () => {
         companyName="Artisan Wooden Doors"
         address="123 Craftsman Way, Woodville, CA 90210"
         phone="+1 (555) 123-4567"
-        email="info@artisanwoodendoors.com"
+        contactEmail="info@artisanwoodendoors.com"
       />
     </div>
   );
