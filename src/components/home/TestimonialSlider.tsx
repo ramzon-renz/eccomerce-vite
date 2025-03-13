@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import {
@@ -7,6 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface Testimonial {
@@ -65,6 +66,26 @@ const TestimonialSlider = ({
   testimonials = defaultTestimonials,
 }: TestimonialSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi | null>(null);
+
+  const scrollTo = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+    }
+  };
+
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-sm">
@@ -74,11 +95,7 @@ const TestimonialSlider = ({
           align: "center",
         }}
         className="w-full"
-        onSelect={(api) => {
-          if (api) {
-            setCurrentIndex(api.selectedScrollSnap());
-          }
-        }}
+        setApi={setApi}
       >
         <CarouselContent>
           {testimonials.map((testimonial) => (
@@ -98,7 +115,7 @@ const TestimonialSlider = ({
                   "{testimonial.content}"
                 </p>
 
-                <div className="flex items-center mt-auto">
+                <div className="flex items-center">
                   <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
                     <img
                       src={testimonial.avatar}
@@ -128,10 +145,10 @@ const TestimonialSlider = ({
             {testimonials.map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "bg-amber-600 w-4" : "bg-gray-300"}`}
-                onClick={() => {
-                  // This would need the API to be exposed to work fully
-                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex ? "bg-amber-600 w-4" : "bg-gray-300"
+                }`}
+                onClick={() => scrollTo(index)}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
