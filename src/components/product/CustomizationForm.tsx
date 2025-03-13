@@ -290,59 +290,10 @@ const CustomizationForm = ({
               </div>
             </div>
             <div className="flex gap-4">
-              <Button
-                className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { toast } = require("@/components/ui/use-toast");
-                  const { useToast } = require("@/components/ui/use-toast");
-                  const { toast: toastFn } = useToast();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  toastFn({
-                    title: "Added to cart",
-                    description: `Custom ${productName} added to your cart`,
-                  });
-                }}
-              >
+              <Button className="flex-1 bg-amber-600 hover:bg-amber-700 text-white">
                 Add to Cart
               </Button>
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { useNavigate } = require("react-router-dom");
-                  const navigate = useNavigate();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  navigate("/quote");
-                }}
-              >
+              <Button variant="outline" className="flex-1">
                 Request Quote
               </Button>
             </div>
@@ -655,60 +606,12 @@ const CustomizationForm = ({
             {/* Submit Buttons (Mobile Only) */}
             <div className="lg:hidden flex gap-4 mt-8">
               <Button
-                type="button"
+                type="submit"
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { toast } = require("@/components/ui/use-toast");
-                  const { useToast } = require("@/components/ui/use-toast");
-                  const { toast: toastFn } = useToast();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  toastFn({
-                    title: "Added to cart",
-                    description: `Custom ${productName} added to your cart`,
-                  });
-                }}
               >
                 Add to Cart
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { useNavigate } = require("react-router-dom");
-                  const navigate = useNavigate();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  navigate("/quote");
-                }}
-              >
+              <Button type="button" variant="outline" className="flex-1">
                 Request Quote
               </Button>
             </div>
