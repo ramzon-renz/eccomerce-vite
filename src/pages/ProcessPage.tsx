@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, Clock, Tool, CheckCircle, Users } from "lucide-react";
+import { ArrowRight, Clock, Wrench , CheckCircle, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ProcessPage = () => {
@@ -18,7 +18,7 @@ const ProcessPage = () => {
         "We begin by carefully selecting the finest wood materials for your door. Each piece of wood is inspected for quality, grain pattern, and durability to ensure it meets our exacting standards.",
       image:
         "https://images.unsplash.com/photo-1581539250439-c96689b516dd?w=800&q=80",
-      icon: <Tool className="h-8 w-8 text-amber-600" />,
+      icon: <Wrench  className="h-8 w-8 text-amber-600" />,
     },
     {
       id: 2,
