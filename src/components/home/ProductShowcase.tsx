@@ -264,7 +264,7 @@ const ProductShowcase = ({
         </motion.div>
 
         {/* View All Button */}
-        {onViewAll && (
+        {(location.pathname === "/" || filterCategory || searchQuery || Object.values(activeFilters).some(Boolean)) && (
           <div className="text-center">
             <Button
               variant="outline"

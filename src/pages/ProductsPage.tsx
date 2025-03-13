@@ -95,6 +95,7 @@ const ProductsPage = () => {
             }
             filterCategory={category}
             searchQuery={searchQuery}
+            onViewAll={() => navigate("/products")}
           />
         )}
 
