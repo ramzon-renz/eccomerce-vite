@@ -128,14 +128,7 @@ const AboutSection = ({
               to last. Every door that leaves our workshop represents our
               commitment to quality and craftsmanship.
             </p>
-            <Button
-              className="bg-amber-600 hover:bg-amber-700 text-white"
-              onClick={() => {
-                const { useNavigate } = require("react-router-dom");
-                const navigate = useNavigate();
-                navigate("/process");
-              }}
-            >
+            <Button className="bg-amber-600 hover:bg-amber-700 text-white">
               Learn More About Our Process
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
