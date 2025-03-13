@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCart } from "@/context/CartContext";
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 import FilterBar from "./FilterBar";
@@ -109,6 +110,7 @@ const ProductShowcase = ({
   searchQuery = "",
 }: ProductShowcaseProps) => {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [activeFilters, setActiveFilters] = useState<FilterOptions>({
     material: "",
@@ -255,9 +257,7 @@ const ProductShowcase = ({
                   style={product.style}
                   onView={() => navigate(`/products/${product.id}`)}
                   onAddToCart={() => {
-                    // Add to cart logic
-                    const { useCart } = require("@/context/CartContext");
-                    const { addToCart } = useCart();
+                    // Add to cart logic                    
                     addToCart({
                       id: product.id,
                       name: product.name,
