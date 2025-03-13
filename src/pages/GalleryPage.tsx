@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
+import productData from "@/data/products.json";
+import type { ProductData } from "@/types/product";
 
 interface GalleryImage {
   id: string;
@@ -15,97 +17,22 @@ interface GalleryImage {
   productId?: string;
 }
 
-const galleryImages: GalleryImage[] = [
-  {
-    id: "1",
-    src: "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=800&q=80",
-    alt: "Classic Oak Door",
-    category: "interior",
-    productId: "1",
-  },
-  {
-    id: "2",
-    src: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&q=80",
-    alt: "Modern Walnut Entry Door",
-    category: "exterior",
-    productId: "2",
-  },
-  {
-    id: "3",
-    src: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800&q=80",
-    alt: "Rustic Pine Barn Door",
-    category: "interior",
-    productId: "3",
-  },
-  {
-    id: "4",
-    src: "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=800&q=80",
-    alt: "Craftsman Mahogany Door",
-    category: "exterior",
-    productId: "4",
-  },
-  {
-    id: "5",
-    src: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&q=80",
-    alt: "Contemporary Cherry Pocket Door",
-    category: "interior",
-    productId: "5",
-  },
-  {
-    id: "6",
-    src: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=80",
-    alt: "Traditional Oak French Doors",
-    category: "exterior",
-    productId: "6",
-  },
-  {
-    id: "7",
-    src: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80",
-    alt: "Modern Black Front Door",
-    category: "exterior",
-    productId: "7",
-  },
-  {
-    id: "8",
-    src: "https://images.unsplash.com/photo-1600566752355-09c1c6fd1e0a?w=800&q=80",
-    alt: "Minimalist Interior Door",
-    category: "interior",
-    productId: "8",
-  },
-  {
-    id: "9",
-    src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=80",
-    alt: "Rustic Wooden Barn Door",
-    category: "custom",
-    productId: "9",
-  },
-  {
-    id: "10",
-    src: "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=800&q=80",
-    alt: "Custom Glass Panel Door",
-    category: "custom",
-    productId: "10",
-  },
-  {
-    id: "11",
-    src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80",
-    alt: "Elegant Entry Door",
-    category: "exterior",
-    productId: "11",
-  },
-  {
-    id: "12",
-    src: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=800&q=80",
-    alt: "Custom Carved Door",
-    category: "custom",
-    productId: "12",
-  },
-];
+// Transform products data into gallery images
+const galleryImages: GalleryImage[] = (productData as ProductData).products.map(product => ({
+  id: product.id,
+  src: product.images[0],
+  alt: product.name,
+  category: product.style.toLowerCase(),
+  productId: product.id
+}));
 
 const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const navigate = useNavigate();
+
+  // Get unique categories from products
+  const categories = ["all", ...new Set((productData as ProductData).products.map(product => product.style.toLowerCase()))];
 
   const filteredImages =
     activeCategory === "all"
@@ -157,121 +84,42 @@ const GalleryPage = () => {
 
           <Tabs defaultValue="all" className="mb-8">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-4 w-full max-w-md">
-                <TabsTrigger
-                  value="all"
-                  onClick={() => setActiveCategory("all")}
-                >
-                  All
-                </TabsTrigger>
-                <TabsTrigger
-                  value="interior"
-                  onClick={() => setActiveCategory("interior")}
-                >
-                  Interior
-                </TabsTrigger>
-                <TabsTrigger
-                  value="exterior"
-                  onClick={() => setActiveCategory("exterior")}
-                >
-                  Exterior
-                </TabsTrigger>
-                <TabsTrigger
-                  value="custom"
-                  onClick={() => setActiveCategory("custom")}
-                >
-                  Custom
-                </TabsTrigger>
+              <TabsList className="grid w-full max-w-md" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
+                {categories.map((category) => (
+                  <TabsTrigger
+                    key={category}
+                    value={category}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </TabsTrigger>
+                ))}
               </TabsList>
             </div>
 
-            <TabsContent value="all" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredImages.map((image) => (
-                  <motion.div
-                    key={image.id}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
-                    onClick={() => openLightbox(image)}
-                  >
-                    <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="interior" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredImages.map((image) => (
-                  <motion.div
-                    key={image.id}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
-                    onClick={() => openLightbox(image)}
-                  >
-                    <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="exterior" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredImages.map((image) => (
-                  <motion.div
-                    key={image.id}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
-                    onClick={() => openLightbox(image)}
-                  >
-                    <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="custom" className="mt-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {filteredImages.map((image) => (
-                  <motion.div
-                    key={image.id}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                    className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
-                    onClick={() => openLightbox(image)}
-                  >
-                    <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </TabsContent>
+            {categories.map((category) => (
+              <TabsContent key={category} value={category} className="mt-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {filteredImages.map((image) => (
+                    <motion.div
+                      key={image.id}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                      className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
+                      onClick={() => openLightbox(image)}
+                    >
+                      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
           </Tabs>
 
           {/* Call to Action */}
