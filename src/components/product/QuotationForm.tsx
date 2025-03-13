@@ -132,4 +132,140 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
                     name="email"
                     type="email"
                     required
-                    value={formData.email
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number *</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 className="text-lg font-medium mb-4">Address Details</h3>
+              <div className="space-y-2">
+                <Label htmlFor="address">Address *</Label>
+                <Input
+                  id="address"
+                  name="address"
+                  required
+                  value={formData.address}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                <div className="space-y-2">
+                  <Label htmlFor="city">City *</Label>
+                  <Input
+                    id="city"
+                    name="city"
+                    required
+                    value={formData.city}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="state">State *</Label>
+                  <Input
+                    id="state"
+                    name="state"
+                    required
+                    value={formData.state}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="zipCode">Zip Code *</Label>
+                  <Input
+                    id="zipCode"
+                    name="zipCode"
+                    required
+                    value={formData.zipCode}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 className="text-lg font-medium mb-4">Additional Information</h3>
+              <div className="space-y-2">
+                <Label htmlFor="installationRequired">Installation Required?</Label>
+                <select
+                  id="installationRequired"
+                  name="installationRequired"
+                  value={formData.installationRequired}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full"
+                >
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="preferredContactMethod">Preferred Contact Method</Label>
+                <select
+                  id="preferredContactMethod"
+                  name="preferredContactMethod"
+                  value={formData.preferredContactMethod}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full"
+                >
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                </select>
+              </div>
+              <div className="space-y-2 mt-4">
+                <Label htmlFor="additionalNotes">Additional Notes</Label>
+                <Textarea
+                  id="additionalNotes"
+                  name="additionalNotes"
+                  value={formData.additionalNotes}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2">
+                {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Send size={16} />}
+                {isSubmitting ? "Submitting..." : "Request Quote"}
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+            <ShoppingCart size={20} /> Order Summary
+          </h3>
+          <ul className="space-y-4">
+            {cart.map((item, index) => (
+              <li key={index} className="flex justify-between text-gray-700">
+                <span>{item.name} (x{item.quantity})</span>
+                <span>₱{(item.price * item.quantity).toFixed(2)}</span>
+              </li>
+            ))}
+          </ul>
+          <Separator className="my-4" />
+          <div className="flex justify-between font-medium text-gray-900">
+            <span>Total:</span>
+            <span>₱{subtotal.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default QuotationForm;
