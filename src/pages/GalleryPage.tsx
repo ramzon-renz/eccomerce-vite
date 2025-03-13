@@ -26,6 +26,8 @@ const galleryImages: GalleryImage[] = (productData as ProductData).products.map(
   productId: product.id
 }));
 
+console.log('Initial gallery images:', galleryImages);
+
 const GalleryPage = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
@@ -33,11 +35,15 @@ const GalleryPage = () => {
 
   // Get unique categories from products
   const categories = ["all", ...new Set((productData as ProductData).products.map(product => product.style.toLowerCase()))];
+  console.log('Available categories:', categories);
 
   const filteredImages =
     activeCategory === "all"
       ? galleryImages
       : galleryImages.filter((img) => img.category === activeCategory);
+  
+  console.log('Active category:', activeCategory);
+  console.log('Filtered images:', filteredImages);
 
   const openLightbox = (image: GalleryImage) => {
     console.log("Opening lightbox for:", image);
@@ -66,7 +72,7 @@ const GalleryPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4"
             >
               Our Door Gallery
             </motion.h1>
@@ -74,7 +80,7 @@ const GalleryPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="max-w-2xl mx-auto text-gray-600"
+              className="max-w-2xl mx-auto text-gray-600 px-4 sm:px-0"
             >
               Browse our collection of handcrafted wooden doors. Each piece
               showcases our commitment to quality craftsmanship and timeless
@@ -82,63 +88,81 @@ const GalleryPage = () => {
             </motion.p>
           </div>
 
-          <Tabs defaultValue="all" className="mb-8">
-            <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-md" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
-                {categories.map((category) => (
-                  <TabsTrigger
-                    key={category}
-                    value={category}
-                    onClick={() => setActiveCategory(category)}
-                  >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            {categories.map((category) => (
-              <TabsContent key={category} value={category} className="mt-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {filteredImages.map((image) => (
-                    <motion.div
-                      key={image.id}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                      className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white"
-                      onClick={() => openLightbox(image)}
-                    >
-                      <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105"
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
+          <div className="flex justify-center mb-8">
+            <Tabs 
+              defaultValue="all" 
+              value={activeCategory}
+              onValueChange={setActiveCategory}
+              className="w-full max-w-6xl mx-auto"
+            >
+              <div className="flex justify-center px-2 sm:px-4">
+                <div className="w-full overflow-x-auto scrollbar-hide -mx-2 sm:mx-0">
+                  <TabsList className="inline-flex h-auto min-h-[40px] sm:h-10 items-center justify-start sm:justify-center rounded-md bg-gray-100 p-1 text-gray-500 w-full">
+                    {categories.map((category) => (
+                      <TabsTrigger
+                        key={category}
+                        value={category}
+                        className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white data-[state=active]:text-gray-950 data-[state=active]:shadow-sm flex-1 min-w-[80px] sm:min-w-[90px] md:min-w-[100px]"
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
                 </div>
-              </TabsContent>
-            ))}
-          </Tabs>
+              </div>
+
+              {categories.map((category) => (
+                <TabsContent key={category} value={category} className="mt-4 sm:mt-8">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-1 sm:px-2 md:px-4 lg:px-0">
+                    {(category === "all" ? galleryImages : galleryImages.filter(img => img.category === category)).map((image) => (
+                      <motion.div
+                        key={image.id}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                        className="cursor-pointer overflow-hidden rounded-lg shadow-md bg-white group"
+                        onClick={() => openLightbox(image)}
+                      >
+                        <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden relative">
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="w-full h-32 xs:h-36 sm:h-40 md:h-48 lg:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 flex items-center justify-center">
+                            <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm sm:text-base font-medium">
+                              View Details
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </div>
 
           {/* Call to Action */}
-          <div className="mt-16 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <div className="mt-8 sm:mt-12 md:mt-16 text-center px-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
               Can't find what you're looking for?
             </h2>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto">
               We specialize in custom doors tailored to your exact
               specifications.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Button
-                className="bg-amber-600 hover:bg-amber-700 text-white"
+                className="bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base"
                 onClick={() => navigate("/customize")}
               >
                 Design Your Custom Door
               </Button>
-              <Button variant="outline" onClick={() => navigate("/contact")}>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate("/contact")}
+                className="text-sm sm:text-base"
+              >
                 Contact Our Team
               </Button>
             </div>
@@ -149,18 +173,18 @@ const GalleryPage = () => {
       {/* Lightbox */}
       {selectedImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-2 sm:p-4"
           onClick={closeLightbox}
         >
           <div
-            className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden"
+            className="relative w-full max-w-4xl bg-white rounded-lg overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-4 right-4 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all z-10"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-70 transition-all z-10"
               onClick={closeLightbox}
             >
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
 
             <div className="flex flex-col md:flex-row">
@@ -168,28 +192,26 @@ const GalleryPage = () => {
                 <img
                   src={selectedImage.src}
                   alt={selectedImage.alt}
-                  className="w-full h-auto max-h-[80vh] object-contain"
+                  className="w-full h-auto max-h-[60vh] md:max-h-[80vh] object-contain"
                 />
               </div>
-              <div className="p-6 md:w-1/3 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xl font-bold mb-2">
-                    {selectedImage.alt}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Category:{" "}
-                    {selectedImage.category.charAt(0).toUpperCase() +
-                      selectedImage.category.slice(1)}
-                  </p>
-                  <p className="text-gray-700">
-                    This beautiful door showcases our commitment to quality
-                    craftsmanship and attention to detail.
-                  </p>
-                </div>
+              <div className="p-4 md:p-6 md:w-1/3">
+                <h3 className="text-lg sm:text-xl font-bold mb-2">
+                  {selectedImage.alt}
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Category:{" "}
+                  {selectedImage.category.charAt(0).toUpperCase() +
+                    selectedImage.category.slice(1)}
+                </p>
+                <p className="text-gray-700 mb-6">
+                  This beautiful door showcases our commitment to quality
+                  craftsmanship and attention to detail.
+                </p>
 
                 {selectedImage.productId && (
                   <Button
-                    className="mt-6 bg-amber-600 hover:bg-amber-700 text-white"
+                    className="w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white"
                     onClick={() => viewProduct(selectedImage.productId!)}
                   >
                     View Product Details
