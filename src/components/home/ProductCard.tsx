@@ -62,6 +62,15 @@ const ProductCard = ({
       });
     }
   };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart();
+    toast({
+      title: "Added to cart",
+      description: `${name} has been added to your cart`,
+    });
+  };
   return (
     <motion.div
       whileHover={{ y: -10 }}
@@ -112,7 +121,7 @@ const ProductCard = ({
             <Eye size={16} />
             <span>View</span>
           </Button>
-          <Button size="sm" className="flex-1 gap-1" onClick={onAddToCart}>
+          <Button size="sm" className="flex-1 gap-1" onClick={handleAddToCart}>
             <ShoppingCart size={16} />
             <span>Add</span>
           </Button>

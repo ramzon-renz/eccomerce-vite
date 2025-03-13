@@ -121,6 +121,7 @@ const TestimonialSlider = ({
           ))}
         </CarouselContent>
 
+        {/* Decorative Elements / Image Indicators */}
         <div className="flex justify-center mt-6 gap-2">
           <CarouselPrevious className="static translate-y-0 mr-2" />
           <div className="flex gap-2 items-center">

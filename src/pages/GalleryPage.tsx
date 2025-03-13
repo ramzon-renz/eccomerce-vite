@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 
 interface GalleryImage {
   id: string;
@@ -112,6 +113,7 @@ const GalleryPage = () => {
       : galleryImages.filter((img) => img.category === activeCategory);
 
   const openLightbox = (image: GalleryImage) => {
+    console.log("Opening lightbox for:", image);
     setSelectedImage(image);
     document.body.style.overflow = "hidden";
   };

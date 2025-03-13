@@ -8,6 +8,7 @@ import ContactPage from "./pages/ContactPage";
 import CustomizationPage from "./pages/CustomizationPage";
 import QuotePage from "./pages/QuotePage";
 import GalleryPage from "./pages/GalleryPage";
+import ProcessPage from "./pages/ProcessPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/customize" element={<CustomizationPage />} />
               <Route path="/quote" element={<QuotePage />} />
               <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/process" element={<ProcessPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}

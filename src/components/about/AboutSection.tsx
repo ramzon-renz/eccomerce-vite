@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Award, Clock, Users, Hammer } from "lucide-react";
@@ -73,6 +74,9 @@ const AboutSection = ({
     },
   ],
 }: AboutSectionProps) => {
+
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -128,7 +132,10 @@ const AboutSection = ({
               to last. Every door that leaves our workshop represents our
               commitment to quality and craftsmanship.
             </p>
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+            <Button
+              className="bg-amber-600 hover:bg-amber-700 text-white"
+              onClick={() => navigate("/process")}
+            >
               Learn More About Our Process
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -295,10 +302,14 @@ const AboutSection = ({
             browse our collection of premium wooden doors.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+            <Button 
+              className="bg-amber-600 hover:bg-amber-700 text-white"
+              onClick={() => navigate("/products")}
+            >
               Browse Our Collection
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline">Contact Us</Button>
+            <Button variant="outline" onClick={() => navigate("/contact")}>Contact Us</Button>
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
@@ -20,36 +25,61 @@ const HeroSection = ({
   onExplore = () => console.log("Explore products clicked"),
 }: HeroSectionProps) => {
   const navigate = useNavigate();
-
-  const handleExplore = () => {
-    navigate("/products");
-  };
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
 
+  // Multiple background images for auto-rotation
+  const backgroundImages = [
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1920&q=80",
+    "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1920&q=80",
+    "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=1920&q=80",
+  ];
+
+  const handleExplore = () => {
+    navigate("/products");
+  };
+
   useEffect(() => {
     setIsMounted(true);
+
+    // Auto-rotate background images
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1,
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="relative w-full h-[700px] overflow-hidden bg-gray-900">
-      {/* Parallax Background */}
-      <motion.div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          y: isMounted ? y : 0,
-          opacity: isMounted ? opacity : 1,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40 z-10" />
-        <img
-          src={backgroundImage}
-          alt="Wooden door craftsmanship"
-          className="w-full h-full object-cover"
-        />
-      </motion.div>
+      {/* Parallax Background with Auto-Rotation */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentImageIndex}
+          className="absolute inset-0 w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            opacity: isMounted ? opacity : 1,
+            y, // Move `y` here
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40 z-10" />
+          <img
+            src={backgroundImages[currentImageIndex]}
+            alt="Wooden door craftsmanship"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
 
       {/* Content */}
       <div className="relative z-20 container mx-auto h-full flex flex-col justify-center items-center text-center px-4">
@@ -77,7 +107,7 @@ const HeroSection = ({
           </motion.div>
         </motion.div>
 
-        {/* Decorative Elements */}
+        {/* Decorative Elements / Image Indicators */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.7 }}
@@ -85,8 +115,11 @@ const HeroSection = ({
           className="absolute bottom-8 left-0 right-0 flex justify-center"
         >
           <div className="flex space-x-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="w-2 h-2 rounded-full bg-white/70" />
+            {backgroundImages.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentImageIndex ? "w-4 bg-amber-600" : "bg-white/70"}`}
+              />
             ))}
           </div>
         </motion.div>
