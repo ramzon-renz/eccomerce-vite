@@ -8,8 +8,10 @@ import {
   Mail,
   Phone,
   MapPin,
+  Loader2,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 interface FooterProps {
   companyName?: string;
@@ -49,12 +51,34 @@ const Footer = ({
   ],
 }: FooterProps) => {
   const [emailInput, setEmailInput] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (emailInput) {
-      alert(`Thank you for subscribing with ${emailInput}!`);
+    if (!emailInput) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:5001/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: emailInput }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+
+      toast.success('Successfully subscribed to newsletter!');
       setEmailInput("");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to subscribe');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -190,8 +214,16 @@ const Footer = ({
                 type="submit"
                 className="bg-amber-600 hover:bg-amber-700 text-white w-full"
                 size="sm"
+                disabled={isLoading}
               >
-                Subscribe
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Subscribing...
+                  </>
+                ) : (
+                  'Subscribe'
+                )}
               </Button>
             </form>
           </div>

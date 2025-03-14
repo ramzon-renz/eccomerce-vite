@@ -10,9 +10,10 @@ import QuotePage from "./pages/QuotePage";
 import GalleryPage from "./pages/GalleryPage";
 import ProcessPage from "./pages/ProcessPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import Unsubscribe from "./pages/Unsubscribe";
 import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
-import { Toaster } from "./components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 import routes from "tempo-routes";
 
 function App() {
@@ -31,10 +32,11 @@ function App() {
               <Route path="/quote" element={<QuotePage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/process" element={<ProcessPage />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
             {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
-            <Toaster />
+            <SonnerToaster position="top-right" theme="dark" />
           </>
         </Suspense>
       </WishlistProvider>
