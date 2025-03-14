@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { Award, Clock, Users, Hammer } from "lucide-react";
 import TestimonialSlider from "./TestimonialSlider";
-
+import { useNavigate } from "react-router-dom";
 interface Statistic {
   id: number;
   value: string;
@@ -48,9 +49,11 @@ const CraftsmanshipSection = ({
   description = "We take pride in our meticulous attention to detail and commitment to excellence. Each door is handcrafted by our skilled artisans using traditional techniques combined with modern precision.",
   statistics = defaultStatistics,
 }: CraftsmanshipSectionProps) => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 px-4 bg-stone-50">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mb-16">
         {/* Section Header */}
         <div className="text-center mb-12">
           <motion.h2
@@ -133,11 +136,32 @@ const CraftsmanshipSection = ({
           viewport={{ once: true }}
           className="mb-8"
         >
-          <h3 className="text-2xl font-bold text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
             What Our Customers Say
-          </h3>
+          </h2>
+          <p className="mb-8 text-gray-600 max-w-2xl mx-auto">
+            Don't just take our word for it—hear from our satisfied customers about their experiences.
+          </p>
           <TestimonialSlider />
         </motion.div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="py-16 bg-amber-600">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center text-white">
+            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Space?</h2>
+            <p className="max-w-2xl mx-auto mb-8 text-amber-100">
+              Request a personalized quote today and let our team help you find the perfect furniture pieces for your home.
+            </p>
+            <Button
+              className="bg-white text-amber-600 hover:bg-amber-50 px-8"
+              onClick={() => navigate("/quote")}
+            >
+              Get a Free Quote
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );

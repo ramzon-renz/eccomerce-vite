@@ -29,7 +29,7 @@ const defaultTestimonials: Testimonial[] = [
     name: "Sarah Johnson",
     role: "Interior Designer",
     company: "Modern Spaces",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     content:
       "The craftsmanship of these wooden doors is exceptional. My clients are always impressed with the quality and attention to detail.",
   },
@@ -38,7 +38,7 @@ const defaultTestimonials: Testimonial[] = [
     name: "Michael Chen",
     role: "Homeowner",
     company: "",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=michael",
+    avatar:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     content:
       "We renovated our entire home and chose these doors for every room. The difference in quality compared to our previous doors is remarkable.",
   },
@@ -47,7 +47,7 @@ const defaultTestimonials: Testimonial[] = [
     name: "Emily Rodriguez",
     role: "Architect",
     company: "Rodriguez & Associates",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+    avatar: "https://images.unsplash.com/photo-1565884280295-98eb83e41c65?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
     content:
       "As an architect, I appreciate the precision and durability of these wooden doors. They complement my designs perfectly.",
   },
@@ -120,7 +120,7 @@ const TestimonialSlider = ({
                     <img
                       src={testimonial.avatar}
                       alt={testimonial.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-full"
                     />
                   </div>
                   <div className="text-left">

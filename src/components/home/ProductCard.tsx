@@ -127,7 +127,7 @@ const ProductCard = ({
           </Button>
           <Button
             size="sm"
-            className="flex-1"
+            className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
             onClick={() => {
               addToCart({
                 id: id,

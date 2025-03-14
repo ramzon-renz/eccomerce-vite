@@ -11,6 +11,7 @@ import { ArrowRight } from "lucide-react";
 
 interface HeroSectionProps {
   title?: string;
+  title2?: string;
   subtitle?: string;
   ctaText?: string;
   backgroundImage?: string;
@@ -18,7 +19,8 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({
-  title = "Handcrafted Wooden Doors",
+  title = "Elegant Furniture for Your",
+  title2 = "Modern Home",
   subtitle = "Premium craftsmanship for your home, built to last generations",
   ctaText = "Explore Products",
   backgroundImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80",
@@ -89,10 +91,10 @@ const HeroSection = ({
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-3xl"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            {title}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg leading-tight">
+            {title} <span className="text-amber-600">{title2}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 drop-shadow-md">
+          <p className="text-xl text-white/90 mb-8 drop-shadow-md">
             {subtitle}
           </p>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

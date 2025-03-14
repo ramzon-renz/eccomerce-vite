@@ -10,14 +10,15 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <Navbar transparent={true} />
+      <Navbar transparent={false} />
 
       {/* Main Content */}
       <main>
         {/* Hero Section */}
         <HeroSection
-          title="Handcrafted Wooden Doors"
-          subtitle="Premium craftsmanship for your home, built to last generations"
+          title="Elegant Furniture for Your"
+          title2="Modern Home"
+          subtitle="Discover premium furniture pieces that blend style, comfort, and exquisite craftsmanship to elevate your living spaces."
           ctaText="Explore Products"
           backgroundImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80"
           onExplore={() => (window.location.href = "/products")}
