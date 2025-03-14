@@ -151,116 +151,203 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
             </div>
 
             <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-medium mb-4">Address Details</h3>
-              <div className="space-y-2">
-                <Label htmlFor="address">Address *</Label>
-                <Input
-                  id="address"
-                  name="address"
-                  required
-                  value={formData.address}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+              <h3 className="text-lg font-medium mb-4">Shipping Address</h3>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="city">City *</Label>
+                  <Label htmlFor="address">Street Address *</Label>
                   <Input
-                    id="city"
-                    name="city"
+                    id="address"
+                    name="address"
                     required
-                    value={formData.city}
+                    value={formData.address}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="state">State *</Label>
-                  <Input
-                    id="state"
-                    name="state"
-                    required
-                    value={formData.state}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="zipCode">Zip Code *</Label>
-                  <Input
-                    id="zipCode"
-                    name="zipCode"
-                    required
-                    value={formData.zipCode}
-                    onChange={handleChange}
-                  />
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City *</Label>
+                    <Input
+                      id="city"
+                      name="city"
+                      required
+                      value={formData.city}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="state">State/Province *</Label>
+                    <Input
+                      id="state"
+                      name="state"
+                      required
+                      value={formData.state}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="zipCode">Zip/Postal Code *</Label>
+                    <Input
+                      id="zipCode"
+                      name="zipCode"
+                      required
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h3 className="text-lg font-medium mb-4">Additional Information</h3>
-              <div className="space-y-2">
-                <Label htmlFor="installationRequired">Installation Required?</Label>
-                <select
-                  id="installationRequired"
-                  name="installationRequired"
-                  value={formData.installationRequired}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full"
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-              </div>
-              <div className="space-y-2 mt-4">
-                <Label htmlFor="preferredContactMethod">Preferred Contact Method</Label>
-                <select
-                  id="preferredContactMethod"
-                  name="preferredContactMethod"
-                  value={formData.preferredContactMethod}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full"
-                >
-                  <option value="email">Email</option>
-                  <option value="phone">Phone</option>
-                </select>
-              </div>
-              <div className="space-y-2 mt-4">
-                <Label htmlFor="additionalNotes">Additional Notes</Label>
-                <Textarea
-                  id="additionalNotes"
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
-                  onChange={handleChange}
-                />
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="installationRequired">Do you require installation services?</Label>
+                  <select
+                    id="installationRequired"
+                    name="installationRequired"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    value={formData.installationRequired}
+                    onChange={handleChange}
+                  >
+                    <option value="no">No, I will arrange my own installation</option>
+                    <option value="yes">Yes, please include installation in the quote</option>
+                    <option value="unsure">I'm not sure yet</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="preferredContactMethod">Preferred Contact Method</Label>
+                  <select
+                    id="preferredContactMethod"
+                    name="preferredContactMethod"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    value={formData.preferredContactMethod}
+                    onChange={handleChange}
+                  >
+                    <option value="email">Email</option>
+                    <option value="phone">Phone</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="additionalNotes">Additional Notes or Requirements</Label>
+                  <Textarea
+                    id="additionalNotes"
+                    name="additionalNotes"
+                    rows={4}
+                    placeholder="Please include any special instructions or questions here..."
+                    value={formData.additionalNotes}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex justify-end mt-6">
-              <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2">
-                {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Send size={16} />}
-                {isSubmitting ? "Submitting..." : "Request Quote"}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3"
+              disabled={isSubmitting || cart.length === 0}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting Request...
+                </>
+              ) : (
+                <>
+                  <Send className="mr-2 h-5 w-5" />
+                  Submit Quote Request
+                </>
+              )}
+            </Button>
           </form>
         </div>
 
-        {/* Summary */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
-            <ShoppingCart size={20} /> Order Summary
-          </h3>
-          <ul className="space-y-4">
-            {cart.map((item, index) => (
-              <li key={index} className="flex justify-between text-gray-700">
-                <span>{item.name} (x{item.quantity})</span>
-                <span>₱{(item.price * item.quantity).toFixed(2)}</span>
-              </li>
-            ))}
-          </ul>
-          <Separator className="my-4" />
-          <div className="flex justify-between font-medium text-gray-900">
-            <span>Total:</span>
-            <span>₱{subtotal.toFixed(2)}</span>
+        {/* Order Summary */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24">
+            <h3 className="text-lg font-medium mb-4 flex items-center">
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              Order Summary
+            </h3>
+
+            {cart.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">Your cart is empty</p>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => (window.location.href = "/products")}
+                >
+                  Browse Products
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="max-h-[400px] overflow-y-auto mb-4">
+                  {cart.map((item) => (
+                    <div key={item.id} className="flex py-3 border-b">
+                      <div className="w-16 h-16 rounded overflow-hidden flex-shrink-0">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="ml-3 flex-1">
+                        <h4 className="text-sm font-medium">{item.name}</h4>
+                        <div className="flex items-center mt-1 text-xs text-gray-500">
+                          {item.material && <span>{item.material}</span>}
+                          {item.style && (
+                            <>
+                              <span className="mx-1">•</span>
+                              <span>{item.style}</span>
+                            </>
+                          )}
+                        </div>
+                        <div className="flex justify-between items-center mt-1">
+                          <span className="text-xs">Qty: {item.quantity}</span>
+                          <span className="text-sm font-medium">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-2 pt-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Subtotal</span>
+                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Shipping</span>
+                    <span>
+                      {subtotal >= 1000 ? (
+                        <span className="text-green-600">Free</span>
+                      ) : (
+                        "Calculated after quote"
+                      )}
+                    </span>
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>Estimated Total</span>
+                    <span>${subtotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 p-3 rounded-md mt-4 flex items-start">
+                  <AlertCircle className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <p className="text-blue-800 text-xs">
+                    This is an estimated total. Final pricing will be confirmed in your quote and may include additional costs for customization, shipping, and installation if requested.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

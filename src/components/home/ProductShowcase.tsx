@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useCart } from "@/context/CartContext";
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
@@ -26,7 +26,7 @@ interface FilterOptions {
   type: string;
 }
 
-const ProductShowcase = ({
+const ProductShowcase: React.FC<ProductShowcaseProps> = ({
   title = "Our Premium Collection",
   subtitle = "Discover our handcrafted wooden doors, each piece a testament to exceptional craftsmanship and timeless design.",
   products = (productData as ProductData).products.map(product => ({
@@ -49,115 +49,79 @@ const ProductShowcase = ({
   const { addToCart } = useCart();
   const [filteredProducts, setFilteredProducts] = useState<ProductCardData[]>(products);
   const [activeFilters, setActiveFilters] = useState<FilterOptions>({
-    material: "",
-    style: "",
-    priceRange: "",
-    category: "",
-    type: "",
+    material: "all",
+    style: "all",
+    priceRange: "all",
+    category: "all",
+    type: "all",
   });
 
+  const handleFilterChange = useCallback((newFilters: FilterOptions) => {
+    setActiveFilters(newFilters);
+  }, []);
+
   useEffect(() => {
-    // Parse URL parameters
-    const params = new URLSearchParams(location.search);
-    const categoryParam = params.get("category");
-    const typeParam = params.get("type");
-    const searchParam = params.get("search");
+    // Initialize filters based on filterCategory prop
+    if (filterCategory) {
+      setActiveFilters(prev => ({
+        ...prev,
+        category: filterCategory.toLowerCase()
+      }));
+    }
+  }, [filterCategory]);
 
-    // Apply filters when they change
-    let result = [...products];
+  useEffect(() => {
+    let filtered = [...products];
 
-    // Apply URL-based category filter if present
-    if (categoryParam) {
-      result = result.filter(
-        (product) =>
-          product.category.toLowerCase() === categoryParam.toLowerCase()
+    // Apply category filter
+    if (activeFilters.category && activeFilters.category !== "all") {
+      filtered = filtered.filter(product => 
+        product.category.toLowerCase() === activeFilters.category.toLowerCase()
       );
     }
 
-    // Apply URL-based type filter if present
-    if (typeParam) {
-      result = result.filter(
-        (product) =>
-          product.type.toLowerCase() === typeParam.toLowerCase()
+    // Apply type filter
+    if (activeFilters.type && activeFilters.type !== "all") {
+      filtered = filtered.filter(product => 
+        product.type.toLowerCase() === activeFilters.type.toLowerCase()
       );
     }
 
-    // Apply search query if present
-    if (searchQuery || searchParam) {
-      const query = (searchQuery || searchParam || "").toLowerCase();
-      result = result.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.material.toLowerCase().includes(query) ||
-          product.style.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query) ||
-          product.type.toLowerCase().includes(query)
+    // Apply material filter
+    if (activeFilters.material && activeFilters.material !== "all") {
+      filtered = filtered.filter(product => 
+        product.material.toLowerCase() === activeFilters.material.toLowerCase()
       );
     }
 
-    // Apply UI filters
-    if (activeFilters.category) {
-      result = result.filter(
-        (product) =>
-          product.category.toLowerCase() === activeFilters.category.toLowerCase()
+    // Apply style filter
+    if (activeFilters.style && activeFilters.style !== "all") {
+      filtered = filtered.filter(product => 
+        product.style.toLowerCase() === activeFilters.style.toLowerCase()
       );
     }
 
-    if (activeFilters.type) {
-      result = result.filter(
-        (product) =>
-          product.type.toLowerCase() === activeFilters.type.toLowerCase()
-      );
+    // Apply price range filter
+    if (activeFilters.priceRange && activeFilters.priceRange !== "all") {
+      filtered = filtered.filter(product => {
+        const price = product.price;
+        switch (activeFilters.priceRange) {
+          case "budget":
+            return price >= 500 && price <= 1000;
+          case "mid":
+            return price >= 1000 && price <= 2500;
+          case "premium":
+            return price >= 2500 && price <= 5000;
+          case "luxury":
+            return price >= 5000;
+          default:
+            return true;
+        }
+      });
     }
 
-    if (activeFilters.material) {
-      result = result.filter(
-        (product) =>
-          product.material.toLowerCase() === activeFilters.material.toLowerCase()
-      );
-    }
-
-    if (activeFilters.style) {
-      result = result.filter(
-        (product) =>
-          product.style.toLowerCase() === activeFilters.style.toLowerCase()
-      );
-    }
-
-    if (activeFilters.priceRange) {
-      // Apply price range filtering
-      switch (activeFilters.priceRange) {
-        case "budget":
-          result = result.filter((product) => product.price < 1000);
-          break;
-        case "mid":
-          result = result.filter(
-            (product) => product.price >= 1000 && product.price < 2500
-          );
-          break;
-        case "premium":
-          result = result.filter(
-            (product) => product.price >= 2500 && product.price < 5000
-          );
-          break;
-        case "luxury":
-          result = result.filter((product) => product.price >= 5000);
-          break;
-      }
-    }
-
-    // Debug logging
-    console.log('URL Parameters:', { categoryParam, typeParam, searchParam });
-    console.log('Active Filters:', activeFilters);
-    console.log('Filtered Products:', result);
-
-    setFilteredProducts(result);
-  }, [activeFilters, filterCategory, searchQuery, products, location.search]);
-
-  const handleFilterChange = (filters: FilterOptions) => {
-    setActiveFilters(filters);
-  };
+    setFilteredProducts(filtered);
+  }, [products, activeFilters]);
 
   // Animation variants for staggered children
   const containerVariants = {
@@ -254,7 +218,7 @@ const ProductShowcase = ({
                 variant="outline"
                 className="mt-4"
                 onClick={() =>
-                  setActiveFilters({ material: "", style: "", priceRange: "", category: "", type: "" })
+                  setActiveFilters({ material: "all", style: "all", priceRange: "all", category: "all", type: "all" })
                 }
               >
                 Clear Filters
