@@ -228,13 +228,9 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
         </motion.div>
 
         {/* View All Button */}
-        {(location.pathname === "/" || filterCategory || searchQuery || Object.values(activeFilters).some(Boolean)) && (
+        {location.pathname !== "/products" && (
           <div className="text-center">
-            <Button
-              variant="outline"
-              className="group"
-              onClick={onViewAll}
-            >
+            <Button variant="outline" className="group" onClick={() => navigate("/products")}>
               View All Products
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
