@@ -10,6 +10,7 @@ import { Check, Info, Ruler, Palette, Grid3X3, Boxes } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import customizationData from "@/data/customizationData.json";
 
 interface CustomizationFormProps {
   productName?: string;
@@ -76,51 +77,15 @@ const CustomizationForm = ({
     onSubmit(customization);
   };
 
-  // Materials data
-  const materials = [
-    { id: "oak", name: "Oak", description: "Durable and classic", price: 0 },
-    { id: "mahogany", name: "Mahogany", description: "Rich and elegant", price: 250 },
-    { id: "walnut", name: "Walnut", description: "Dark and sophisticated", price: 300 },
-    { id: "pine", name: "Pine", description: "Light and affordable", price: -100 },
-    { id: "cherry", name: "Cherry", description: "Warm and refined", price: 200 },
-  ];
-
-  // Finishes data
-  const finishes = [
-    { id: "natural", name: "Natural", description: "Enhances wood grain", price: 0 },
-    { id: "stained", name: "Stained", description: "Rich color depth", price: 100 },
-    { id: "painted", name: "Painted", description: "Solid color finish", price: 150 },
-    { id: "distressed", name: "Distressed", description: "Rustic appearance", price: 200 },
-    { id: "glazed", name: "Glazed", description: "Subtle highlights", price: 250 },
-  ];
-
-  // Glass types data
-  const glassTypes = [
-    { id: "none", name: "No Glass", description: "Solid door", price: 0 },
-    { id: "clear", name: "Clear Glass", description: "Transparent panels", price: 150 },
-    { id: "frosted", name: "Frosted Glass", description: "Privacy with light", price: 200 },
-    { id: "stained", name: "Stained Glass", description: "Decorative patterns", price: 350 },
-    { id: "textured", name: "Textured Glass", description: "Unique patterns", price: 250 },
-  ];
-
-  // Hardware options
-  const hardwareOptions = [
-    { id: "brass", name: "Brass", description: "Classic look", price: 0 },
-    { id: "stainless", name: "Stainless Steel", description: "Modern finish", price: 50 },
-    { id: "bronze", name: "Oil-Rubbed Bronze", description: "Traditional style", price: 75 },
-    { id: "black", name: "Matte Black", description: "Contemporary design", price: 100 },
-    { id: "copper", name: "Copper", description: "Unique patina", price: 125 },
-  ];
-
   // Calculate base price and additional costs
   const materialPrice =
-    materials.find((m) => m.id === customization.material)?.price || 0;
+    customizationData.materials.find((m) => m.id === customization.material)?.price || 0;
   const finishPrice =
-    finishes.find((f) => f.id === customization.finish)?.price || 0;
+    customizationData.finishes.find((f) => f.id === customization.finish)?.price || 0;
   const glassPrice =
-    glassTypes.find((g) => g.id === customization.glassType)?.price || 0;
+    customizationData.glassTypes.find((g) => g.id === customization.glassType)?.price || 0;
   const hardwarePrice =
-    hardwareOptions.find((h) => h.id === customization.hardware)?.price || 0;
+    customizationData.hardwareOptions.find((h) => h.id === customization.hardware)?.price || 0;
 
   // Size adjustments (simplified)
   const standardSize =
@@ -142,7 +107,7 @@ const CustomizationForm = ({
       price: totalPrice,
       image: productImage,
       quantity: 1,
-      material: materials.find((m) => m.id === customization.material)?.name || "",
+      material: customizationData.materials.find((m) => m.id === customization.material)?.name || "",
       style: "Custom",
     });
 
@@ -159,45 +124,18 @@ const CustomizationForm = ({
       price: totalPrice,
       image: productImage,
       quantity: 1,
-      material: materials.find((m) => m.id === customization.material)?.name || "",
+      material: customizationData.materials.find((m) => m.id === customization.material)?.name || "",
       style: "Custom",
     });
 
     navigate("/quote");
   };
 
-  // Material images mapping
-  const materialImages = {
-    oak: "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
-    mahogany: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80",
-    walnut: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&q=80",
-    pine: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=500&q=80",
-    cherry: "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=500&q=80",
-  };
-
-  // Finish effects (overlay colors)
-  const finishEffects = {
-    natural: "none",
-    stained: "brightness(0.8) sepia(0.3)",
-    painted: "brightness(0.9) saturate(1.2)",
-    distressed: "contrast(1.1) brightness(0.9)",
-    glazed: "brightness(1.1) saturate(1.1)",
-  };
-
-  // Glass overlay images
-  const glassOverlays = {
-    none: null,
-    clear: "url(/images/glass-overlays/clear-glass.png)",
-    frosted: "url(/images/glass-overlays/frosted-glass.png)",
-    stained: "url(/images/glass-overlays/stained-glass.png)",
-    textured: "url(/images/glass-overlays/textured-glass.png)",
-  };
-
   // Calculate the current image and effects based on customization
   const { currentImage, imageEffects } = useMemo(() => {
-    const baseImage = materialImages[customization.material as keyof typeof materialImages] || productImage;
-    const finishEffect = finishEffects[customization.finish as keyof typeof finishEffects];
-    const glassOverlay = glassOverlays[customization.glassType as keyof typeof glassOverlays];
+    const baseImage = customizationData.materialImages[customization.material as keyof typeof customizationData.materialImages] || productImage;
+    const finishEffect = customizationData.finishEffects[customization.finish as keyof typeof customizationData.finishEffects];
+    const glassOverlay = customizationData.glassOverlays[customization.glassType as keyof typeof customizationData.glassOverlays];
 
     return {
       currentImage: baseImage,
@@ -230,7 +168,7 @@ const CustomizationForm = ({
                   <div 
                     className="absolute inset-0 pointer-events-none"
                     style={{
-                      backgroundImage: glassOverlays[customization.glassType as keyof typeof glassOverlays] || 'none',
+                      backgroundImage: customizationData.glassOverlays[customization.glassType as keyof typeof customizationData.glassOverlays] || 'none',
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                       mixBlendMode: 'overlay',
@@ -241,8 +179,8 @@ const CustomizationForm = ({
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
                 <p className="text-white text-sm">
-                  {materials.find(m => m.id === customization.material)?.name} • 
-                  {finishes.find(f => f.id === customization.finish)?.name} • 
+                  {customizationData.materials.find(m => m.id === customization.material)?.name} • 
+                  {customizationData.finishes.find(f => f.id === customization.finish)?.name} • 
                   {customization.width}" × {customization.height}"
                 </p>
               </div>
@@ -261,7 +199,7 @@ const CustomizationForm = ({
                     <span>
                       Material (
                       {
-                        materials.find((m) => m.id === customization.material)
+                        customizationData.materials.find((m) => m.id === customization.material)
                           ?.name
                       }
                       ):
@@ -278,7 +216,7 @@ const CustomizationForm = ({
                     <span>
                       Finish (
                       {
-                        finishes.find((f) => f.id === customization.finish)
+                        customizationData.finishes.find((f) => f.id === customization.finish)
                           ?.name
                       }
                       ):
@@ -291,7 +229,7 @@ const CustomizationForm = ({
                     <span>
                       Glass (
                       {
-                        glassTypes.find((g) => g.id === customization.glassType)
+                        customizationData.glassTypes.find((g) => g.id === customization.glassType)
                           ?.name
                       }
                       ):
@@ -304,7 +242,7 @@ const CustomizationForm = ({
                     <span>
                       Hardware (
                       {
-                        hardwareOptions.find(
+                        customizationData.hardwareOptions.find(
                           (h) => h.id === customization.hardware,
                         )?.name
                       }
@@ -386,7 +324,7 @@ const CustomizationForm = ({
                     onValueChange={(value) => handleChange("material", value)}
                     className="grid grid-cols-1 gap-4 mt-4"
                   >
-                    {materials.map((material) => (
+                    {customizationData.materials.map((material) => (
                       <Label
                         key={material.id}
                         htmlFor={`material-${material.id}`}
@@ -499,7 +437,7 @@ const CustomizationForm = ({
                       onValueChange={(value) => handleChange("hardware", value)}
                       className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                     >
-                      {hardwareOptions.map((hardware) => (
+                      {customizationData.hardwareOptions.map((hardware) => (
                         <Label
                           key={hardware.id}
                           htmlFor={`hardware-${hardware.id}`}
@@ -544,7 +482,7 @@ const CustomizationForm = ({
                     onValueChange={(value) => handleChange("glassType", value)}
                     className="grid grid-cols-1 gap-4 mt-4"
                   >
-                    {glassTypes.map((glass) => (
+                    {customizationData.glassTypes.map((glass) => (
                       <Label
                         key={glass.id}
                         htmlFor={`glass-${glass.id}`}
@@ -589,7 +527,7 @@ const CustomizationForm = ({
                     onValueChange={(value) => handleChange("finish", value)}
                     className="grid grid-cols-1 gap-4 mt-4"
                   >
-                    {finishes.map((finish) => (
+                    {customizationData.finishes.map((finish) => (
                       <Label
                         key={finish.id}
                         htmlFor={`finish-${finish.id}`}

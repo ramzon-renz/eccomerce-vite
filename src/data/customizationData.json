@@ -1,0 +1,51 @@
+{
+  "materials": [
+    { "id": "oak", "name": "Oak", "description": "Durable and classic", "price": 0 },
+    { "id": "mahogany", "name": "Mahogany", "description": "Rich and elegant", "price": 250 },
+    { "id": "walnut", "name": "Walnut", "description": "Dark and sophisticated", "price": 300 },
+    { "id": "pine", "name": "Pine", "description": "Light and affordable", "price": -100 },
+    { "id": "cherry", "name": "Cherry", "description": "Warm and refined", "price": 200 }
+  ],
+  "finishes": [
+    { "id": "natural", "name": "Natural", "description": "Enhances wood grain", "price": 0 },
+    { "id": "stained", "name": "Stained", "description": "Rich color depth", "price": 100 },
+    { "id": "painted", "name": "Painted", "description": "Solid color finish", "price": 150 },
+    { "id": "distressed", "name": "Distressed", "description": "Rustic appearance", "price": 200 },
+    { "id": "glazed", "name": "Glazed", "description": "Subtle highlights", "price": 250 }
+  ],
+  "glassTypes": [
+    { "id": "none", "name": "No Glass", "description": "Solid door", "price": 0 },
+    { "id": "clear", "name": "Clear Glass", "description": "Transparent panels", "price": 150 },
+    { "id": "frosted", "name": "Frosted Glass", "description": "Privacy with light", "price": 200 },
+    { "id": "stained", "name": "Stained Glass", "description": "Decorative patterns", "price": 350 },
+    { "id": "textured", "name": "Textured Glass", "description": "Unique patterns", "price": 250 }
+  ],
+  "hardwareOptions": [
+    { "id": "brass", "name": "Brass", "description": "Classic look", "price": 0 },
+    { "id": "stainless", "name": "Stainless Steel", "description": "Modern finish", "price": 50 },
+    { "id": "bronze", "name": "Oil-Rubbed Bronze", "description": "Traditional style", "price": 75 },
+    { "id": "black", "name": "Matte Black", "description": "Contemporary design", "price": 100 },
+    { "id": "copper", "name": "Copper", "description": "Unique patina", "price": 125 }
+  ],
+  "materialImages": {
+    "oak": "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
+    "mahogany": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80",
+    "walnut": "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&q=80",
+    "pine": "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=500&q=80",
+    "cherry": "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=500&q=80"
+  },
+  "finishEffects": {
+    "natural": "none",
+    "stained": "brightness(0.8) sepia(0.3)",
+    "painted": "brightness(0.9) saturate(1.2)",
+    "distressed": "contrast(1.1) brightness(0.9)",
+    "glazed": "brightness(1.1) saturate(1.1)"
+  },
+  "glassOverlays": {
+    "none": null,
+    "clear": "url(/images/glass-overlays/clear-glass.png)",
+    "frosted": "url(/images/glass-overlays/frosted-glass.png)",
+    "stained": "url(/images/glass-overlays/stained-glass.png)",
+    "textured": "url(/images/glass-overlays/textured-glass.png)"
+  }
+} 
