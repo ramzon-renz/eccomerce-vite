@@ -221,7 +221,7 @@ const createEmailTemplate = (email) => {
       <h1>Welcome to Artisan Wooden Doors</h1>
     </div>
     <div class="content">
-      <h2>Thank you for joining us! 🎉</h2>
+      <h2>Thank you for joining us!</h2>
       <p>We're thrilled to welcome you to our community of design enthusiasts and craftsmanship admirers.</p>
       
       <div class="features">

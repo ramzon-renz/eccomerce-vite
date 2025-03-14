@@ -6,7 +6,11 @@ const subscriberSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    validate: {
+      validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      message: props => `${props.value} is not a valid email address`
+    }
   },
   status: {
     type: String,
@@ -33,14 +37,25 @@ const subscriberSchema = new mongoose.Schema({
     source: String,
     browser: String,
     platform: String
+  },
+  unsubscribedAt: {
+    type: Date
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  validateBeforeSave: true  // Ensures validation happens before save
 });
 
+// Custom validation for preferences
+subscriberSchema.pre('save', function(next) {
+  if (this.preferences.productUpdates === false && this.preferences.specialOffers === false) {
+    return next(new Error('Both product updates and special offers cannot be disabled at the same time.'));
+  }
+  next();
+});
 // Index for faster queries
 subscriberSchema.index({ email: 1 }, { unique: true });
 subscriberSchema.index({ status: 1 });
 subscriberSchema.index({ subscriptionDate: -1 });
 
-export default mongoose.model('Subscriber', subscriberSchema); 
+export default mongoose.model('Subscriber', subscriberSchema);

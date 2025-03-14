@@ -241,9 +241,6 @@ const Navbar = ({ logo = "/vite.svg", transparent = false }: NavbarProps) => {
                         Artisan Doors
                       </span>
                     </Link>
-                    <SheetClose className="rounded-full p-2 hover:bg-gray-100">
-                      <X className="h-5 w-5" />
-                    </SheetClose>
                   </div>
                 </div>
 
