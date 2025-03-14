@@ -15,7 +15,7 @@ interface QuotationFormProps {
 
 const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
   const { toast } = useToast();
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, removeFromCart, updateQuantity } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -297,7 +297,16 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
                         />
                       </div>
                       <div className="ml-3 flex-1">
-                        <h4 className="text-sm font-medium">{item.name}</h4>
+                        <div className="flex justify-between items-start">
+                          <h4 className="text-sm font-medium">{item.name}</h4>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                            aria-label="Remove item"
+                          >
+                            <AlertCircle className="h-4 w-4" />
+                          </button>
+                        </div>
                         <div className="flex items-center mt-1 text-xs text-gray-500">
                           {item.material && <span>{item.material}</span>}
                           {item.style && (
@@ -307,8 +316,25 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
                             </>
                           )}
                         </div>
-                        <div className="flex justify-between items-center mt-1">
-                          <span className="text-xs">Qty: {item.quantity}</span>
+                        <div className="flex justify-between items-center mt-2">
+                          <div className="flex items-center border rounded-md">
+                            <button
+                              className="px-2 py-0.5 text-xs border-r hover:bg-gray-50"
+                              onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                              disabled={item.quantity <= 1}
+                            >
+                              -
+                            </button>
+                            <span className="px-3 py-0.5 text-xs">
+                              {item.quantity}
+                            </span>
+                            <button
+                              className="px-2 py-0.5 text-xs border-l hover:bg-gray-50"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            >
+                              +
+                            </button>
+                          </div>
                           <span className="text-sm font-medium">
                             ${(item.price * item.quantity).toFixed(2)}
                           </span>
