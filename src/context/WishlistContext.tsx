@@ -34,26 +34,37 @@ export const useWishlist = () => useContext(WishlistContext);
 export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
-  const [itemCount, setItemCount] = useState(0);
-
-  // Load wishlist from localStorage on initial render
-  useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    if (savedWishlist) {
-      try {
-        const parsedWishlist = JSON.parse(savedWishlist);
-        setWishlist(parsedWishlist);
-      } catch (error) {
-        console.error("Failed to parse wishlist from localStorage:", error);
-      }
+  // Initialize state with data from localStorage if it exists
+  const [wishlist, setWishlist] = useState<WishlistItem[]>(() => {
+    try {
+      const savedWishlist = localStorage.getItem("wishlist");
+      return savedWishlist ? JSON.parse(savedWishlist) : [];
+    } catch (error) {
+      console.error("Failed to load initial wishlist state:", error);
+      return [];
     }
-  }, []);
+  });
+  const [itemCount, setItemCount] = useState(() => wishlist.length);
 
-  // Update localStorage and item count whenever wishlist changes
+  // Update localStorage whenever wishlist changes
   useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    setItemCount(wishlist.length);
+    try {
+      const wishlistToSave = wishlist.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        material: item.material,
+        style: item.style,
+        category: item.category,
+        type: item.type
+      }));
+      console.log("Saving wishlist to localStorage:", wishlistToSave);
+      localStorage.setItem("wishlist", JSON.stringify(wishlistToSave));
+      setItemCount(wishlist.length);
+    } catch (error) {
+      console.error("Failed to save wishlist to localStorage:", error);
+    }
   }, [wishlist]);
 
   const addToWishlist = (item: WishlistItem) => {

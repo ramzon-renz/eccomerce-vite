@@ -35,27 +35,41 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [itemCount, setItemCount] = useState(0);
-
-  // Load cart from localStorage on initial render
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        setCart(parsedCart);
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage:", error);
-      }
+  // Initialize state with data from localStorage if it exists
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    try {
+      const savedCart = localStorage.getItem("cart");
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error("Failed to load initial cart state:", error);
+      return [];
     }
-  }, []);
+  });
+  const [itemCount, setItemCount] = useState(() => {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  });
 
-  // Update localStorage and item count whenever cart changes
+  // Update localStorage whenever cart changes
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    setItemCount(count);
+    try {
+      const cartToSave = cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+        material: item.material,
+        style: item.style,
+        category: item.category,
+        type: item.type
+      }));
+      console.log("Saving cart to localStorage:", cartToSave);
+      localStorage.setItem("cart", JSON.stringify(cartToSave));
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      setItemCount(count);
+    } catch (error) {
+      console.error("Failed to save cart to localStorage:", error);
+    }
   }, [cart]);
 
   const addToCart = (item: CartItem) => {
