@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -150,6 +150,49 @@ const CustomizationForm = ({
     navigate("/quote");
   };
 
+  // Material images mapping
+  const materialImages = {
+    oak: "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
+    mahogany: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80",
+    walnut: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&q=80",
+    pine: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=500&q=80",
+    cherry: "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=500&q=80",
+  };
+
+  // Finish effects (overlay colors)
+  const finishEffects = {
+    natural: "none",
+    stained: "brightness(0.8) sepia(0.3)",
+    painted: "brightness(0.9) saturate(1.2)",
+    distressed: "contrast(1.1) brightness(0.9)",
+    glazed: "brightness(1.1) saturate(1.1)",
+  };
+
+  // Glass overlay images
+  const glassOverlays = {
+    none: null,
+    clear: "url(/images/glass-overlays/clear-glass.png)",
+    frosted: "url(/images/glass-overlays/frosted-glass.png)",
+    stained: "url(/images/glass-overlays/stained-glass.png)",
+    textured: "url(/images/glass-overlays/textured-glass.png)",
+  };
+
+  // Calculate the current image and effects based on customization
+  const { currentImage, imageEffects } = useMemo(() => {
+    const baseImage = materialImages[customization.material as keyof typeof materialImages] || productImage;
+    const finishEffect = finishEffects[customization.finish as keyof typeof finishEffects];
+    const glassOverlay = glassOverlays[customization.glassType as keyof typeof glassOverlays];
+
+    return {
+      currentImage: baseImage,
+      imageEffects: {
+        filter: finishEffect,
+        backgroundImage: glassOverlay,
+        backgroundBlendMode: glassOverlay ? 'overlay' : 'normal',
+      }
+    };
+  }, [customization.material, customization.finish, customization.glassType, productImage]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -159,12 +202,34 @@ const CustomizationForm = ({
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Your Custom Door
             </h2>
-            <div className="rounded-lg overflow-hidden border border-gray-200 mb-6">
-              <img
-                src={productImage}
-                alt={productName}
-                className="w-full h-auto object-cover"
-              />
+            <div className="rounded-lg overflow-hidden border border-gray-200 mb-6 relative">
+              <div className="aspect-[3/4] relative">
+                <img
+                  src={currentImage}
+                  alt={productName}
+                  className="w-full h-full object-cover"
+                  style={imageEffects}
+                />
+                {customization.glassType !== 'none' && (
+                  <div 
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage: glassOverlays[customization.glassType as keyof typeof glassOverlays] || 'none',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      mixBlendMode: 'overlay',
+                      opacity: 0.5
+                    }}
+                  />
+                )}
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+                <p className="text-white text-sm">
+                  {materials.find(m => m.id === customization.material)?.name} • 
+                  {finishes.find(f => f.id === customization.finish)?.name} • 
+                  {customization.width}" × {customization.height}"
+                </p>
+              </div>
             </div>
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <h3 className="font-medium text-lg mb-2">
