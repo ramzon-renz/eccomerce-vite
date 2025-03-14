@@ -7,6 +7,9 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Check, Info, Ruler, Palette, Grid3X3 } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface CustomizationFormProps {
   productName?: string;
@@ -29,6 +32,10 @@ const CustomizationForm = ({
   productImage = "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
   onSubmit = () => {},
 }: CustomizationFormProps) => {
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const [customization, setCustomization] = useState<ProductCustomization>({
     material: "oak",
     finish: "natural",
@@ -191,6 +198,37 @@ const CustomizationForm = ({
     hardwarePrice +
     sizeAdjustment;
 
+  const handleAddToCart = () => {
+    addToCart({
+      id: Math.random().toString(36).substr(2, 9),
+      name: `${productName} (Custom)`,
+      price: totalPrice,
+      image: productImage,
+      quantity: 1,
+      material: materials.find((m) => m.id === customization.material)?.name || "",
+      style: "Custom",
+    });
+
+    toast({
+      title: "Added to cart",
+      description: `Custom ${productName} added to your cart`,
+    });
+  };
+
+  const handleRequestQuote = () => {
+    addToCart({
+      id: Math.random().toString(36).substr(2, 9),
+      name: `${productName} (Custom)`,
+      price: totalPrice,
+      image: productImage,
+      quantity: 1,
+      material: materials.find((m) => m.id === customization.material)?.name || "",
+      style: "Custom",
+    });
+
+    navigate("/quote");
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -292,56 +330,14 @@ const CustomizationForm = ({
             <div className="flex gap-4">
               <Button
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { toast } = require("@/components/ui/use-toast");
-                  const { useToast } = require("@/components/ui/use-toast");
-                  const { toast: toastFn } = useToast();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  toastFn({
-                    title: "Added to cart",
-                    description: `Custom ${productName} added to your cart`,
-                  });
-                }}
+                onClick={handleAddToCart}
               >
                 Add to Cart
               </Button>
               <Button
                 variant="outline"
                 className="flex-1"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { useNavigate } = require("react-router-dom");
-                  const navigate = useNavigate();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  navigate("/quote");
-                }}
+                onClick={handleRequestQuote}
               >
                 Request Quote
               </Button>
@@ -657,30 +653,7 @@ const CustomizationForm = ({
               <Button
                 type="button"
                 className="flex-1 bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { toast } = require("@/components/ui/use-toast");
-                  const { useToast } = require("@/components/ui/use-toast");
-                  const { toast: toastFn } = useToast();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  toastFn({
-                    title: "Added to cart",
-                    description: `Custom ${productName} added to your cart`,
-                  });
-                }}
+                onClick={handleAddToCart}
               >
                 Add to Cart
               </Button>
@@ -688,26 +661,7 @@ const CustomizationForm = ({
                 type="button"
                 variant="outline"
                 className="flex-1"
-                onClick={() => {
-                  const { useCart } = require("@/context/CartContext");
-                  const { addToCart } = useCart();
-                  const { useNavigate } = require("react-router-dom");
-                  const navigate = useNavigate();
-
-                  addToCart({
-                    id: Math.random().toString(36).substr(2, 9),
-                    name: `${productName} (Custom)`,
-                    price: totalPrice,
-                    image: productImage,
-                    quantity: 1,
-                    material:
-                      materials.find((m) => m.id === customization.material)
-                        ?.name || "",
-                    style: "Custom",
-                  });
-
-                  navigate("/quote");
-                }}
+                onClick={handleRequestQuote}
               >
                 Request Quote
               </Button>
