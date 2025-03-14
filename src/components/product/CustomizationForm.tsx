@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 interface CustomizationFormProps {
   productName?: string;
   productImage?: string;
+  basePrice?: number;
   onSubmit?: (customizations: ProductCustomization) => void;
 }
 
@@ -30,6 +31,7 @@ interface ProductCustomization {
 const CustomizationForm = ({
   productName = "Classic Oak Door",
   productImage = "https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=500&q=80",
+  basePrice = 899.99,
   onSubmit = () => {},
 }: CustomizationFormProps) => {
   const { addToCart } = useCart();
@@ -61,121 +63,40 @@ const CustomizationForm = ({
   // Materials data
   const materials = [
     { id: "oak", name: "Oak", description: "Durable and classic", price: 0 },
-    {
-      id: "mahogany",
-      name: "Mahogany",
-      description: "Rich and elegant",
-      price: 250,
-    },
-    {
-      id: "walnut",
-      name: "Walnut",
-      description: "Dark and sophisticated",
-      price: 300,
-    },
-    {
-      id: "pine",
-      name: "Pine",
-      description: "Light and affordable",
-      price: -100,
-    },
-    {
-      id: "cherry",
-      name: "Cherry",
-      description: "Warm and refined",
-      price: 200,
-    },
+    { id: "mahogany", name: "Mahogany", description: "Rich and elegant", price: 250 },
+    { id: "walnut", name: "Walnut", description: "Dark and sophisticated", price: 300 },
+    { id: "pine", name: "Pine", description: "Light and affordable", price: -100 },
+    { id: "cherry", name: "Cherry", description: "Warm and refined", price: 200 },
   ];
 
   // Finishes data
   const finishes = [
-    {
-      id: "natural",
-      name: "Natural",
-      description: "Enhances wood grain",
-      price: 0,
-    },
-    {
-      id: "stained",
-      name: "Stained",
-      description: "Rich color depth",
-      price: 100,
-    },
-    {
-      id: "painted",
-      name: "Painted",
-      description: "Solid color finish",
-      price: 150,
-    },
-    {
-      id: "distressed",
-      name: "Distressed",
-      description: "Rustic appearance",
-      price: 200,
-    },
-    {
-      id: "glazed",
-      name: "Glazed",
-      description: "Subtle highlights",
-      price: 250,
-    },
+    { id: "natural", name: "Natural", description: "Enhances wood grain", price: 0 },
+    { id: "stained", name: "Stained", description: "Rich color depth", price: 100 },
+    { id: "painted", name: "Painted", description: "Solid color finish", price: 150 },
+    { id: "distressed", name: "Distressed", description: "Rustic appearance", price: 200 },
+    { id: "glazed", name: "Glazed", description: "Subtle highlights", price: 250 },
   ];
 
   // Glass types data
   const glassTypes = [
     { id: "none", name: "No Glass", description: "Solid door", price: 0 },
-    {
-      id: "clear",
-      name: "Clear Glass",
-      description: "Transparent panels",
-      price: 150,
-    },
-    {
-      id: "frosted",
-      name: "Frosted Glass",
-      description: "Privacy with light",
-      price: 200,
-    },
-    {
-      id: "stained",
-      name: "Stained Glass",
-      description: "Decorative patterns",
-      price: 350,
-    },
-    {
-      id: "textured",
-      name: "Textured Glass",
-      description: "Unique patterns",
-      price: 250,
-    },
+    { id: "clear", name: "Clear Glass", description: "Transparent panels", price: 150 },
+    { id: "frosted", name: "Frosted Glass", description: "Privacy with light", price: 200 },
+    { id: "stained", name: "Stained Glass", description: "Decorative patterns", price: 350 },
+    { id: "textured", name: "Textured Glass", description: "Unique patterns", price: 250 },
   ];
 
   // Hardware options
   const hardwareOptions = [
     { id: "brass", name: "Brass", description: "Classic look", price: 0 },
-    {
-      id: "stainless",
-      name: "Stainless Steel",
-      description: "Modern finish",
-      price: 50,
-    },
-    {
-      id: "bronze",
-      name: "Oil-Rubbed Bronze",
-      description: "Traditional style",
-      price: 75,
-    },
-    {
-      id: "black",
-      name: "Matte Black",
-      description: "Contemporary design",
-      price: 100,
-    },
+    { id: "stainless", name: "Stainless Steel", description: "Modern finish", price: 50 },
+    { id: "bronze", name: "Oil-Rubbed Bronze", description: "Traditional style", price: 75 },
+    { id: "black", name: "Matte Black", description: "Contemporary design", price: 100 },
     { id: "copper", name: "Copper", description: "Unique patina", price: 125 },
   ];
 
   // Calculate base price and additional costs
-  const basePrice = 899.99;
   const materialPrice =
     materials.find((m) => m.id === customization.material)?.price || 0;
   const finishPrice =
@@ -353,10 +274,7 @@ const CustomizationForm = ({
           <form onSubmit={handleSubmit}>
             <Tabs defaultValue="material" className="mb-8">
               <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger
-                  value="material"
-                  className="flex items-center gap-1"
-                >
+                <TabsTrigger value="material" className="flex items-center gap-1">
                   <Grid3X3 className="h-4 w-4" />
                   <span className="hidden sm:inline">Material</span>
                 </TabsTrigger>
@@ -368,10 +286,7 @@ const CustomizationForm = ({
                   <Grid3X3 className="h-4 w-4" />
                   <span className="hidden sm:inline">Glass</span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="dimensions"
-                  className="flex items-center gap-1"
-                >
+                <TabsTrigger value="dimensions" className="flex items-center gap-1">
                   <Ruler className="h-4 w-4" />
                   <span className="hidden sm:inline">Dimensions</span>
                 </TabsTrigger>
@@ -382,9 +297,7 @@ const CustomizationForm = ({
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Select Material</h3>
                   <p className="text-gray-600 text-sm">
-                    Choose the wood type for your door. Different woods offer
-                    varying levels of durability, grain patterns, and natural
-                    colors.
+                    Choose the wood type for your door. Different woods offer varying levels of durability, grain patterns, and natural colors.
                   </p>
 
                   <RadioGroup
@@ -396,7 +309,11 @@ const CustomizationForm = ({
                       <Label
                         key={material.id}
                         htmlFor={`material-${material.id}`}
-                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${customization.material === material.id ? "border-amber-600 bg-amber-50" : "border-gray-200 hover:border-gray-300"}`}
+                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
+                          customization.material === material.id
+                            ? "border-amber-600 bg-amber-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
                       >
                         <RadioGroupItem
                           value={material.id}
@@ -412,8 +329,8 @@ const CustomizationForm = ({
                             {material.price === 0
                               ? "Included in base price"
                               : material.price > 0
-                                ? `+$${material.price.toFixed(2)}`
-                                : `-$${Math.abs(material.price).toFixed(2)}`}
+                              ? `+$${material.price.toFixed(2)}`
+                              : `-$${Math.abs(material.price).toFixed(2)}`}
                           </div>
                         </div>
                       </Label>
@@ -427,8 +344,7 @@ const CustomizationForm = ({
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Select Finish</h3>
                   <p className="text-gray-600 text-sm">
-                    Choose the finish for your door. The finish affects both the
-                    appearance and durability of your door.
+                    Choose the finish for your door. The finish affects both the appearance and durability of your door.
                   </p>
 
                   <RadioGroup
@@ -440,7 +356,11 @@ const CustomizationForm = ({
                       <Label
                         key={finish.id}
                         htmlFor={`finish-${finish.id}`}
-                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${customization.finish === finish.id ? "border-amber-600 bg-amber-50" : "border-gray-200 hover:border-gray-300"}`}
+                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
+                          customization.finish === finish.id
+                            ? "border-amber-600 bg-amber-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
                       >
                         <RadioGroupItem
                           value={finish.id}
@@ -469,8 +389,7 @@ const CustomizationForm = ({
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Select Glass Type</h3>
                   <p className="text-gray-600 text-sm">
-                    Choose the type of glass for your door, if desired. Glass
-                    panels can add light and visual interest to your door.
+                    Choose the type of glass for your door. Glass panels can add light and visual interest to your door.
                   </p>
 
                   <RadioGroup
@@ -482,7 +401,11 @@ const CustomizationForm = ({
                       <Label
                         key={glass.id}
                         htmlFor={`glass-${glass.id}`}
-                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${customization.glassType === glass.id ? "border-amber-600 bg-amber-50" : "border-gray-200 hover:border-gray-300"}`}
+                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
+                          customization.glassType === glass.id
+                            ? "border-amber-600 bg-amber-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
                       >
                         <RadioGroupItem
                           value={glass.id}
@@ -510,20 +433,15 @@ const CustomizationForm = ({
               <TabsContent value="dimensions" className="pt-6">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-medium mb-2">
-                      Door Dimensions
-                    </h3>
+                    <h3 className="text-lg font-medium mb-2">Door Dimensions</h3>
                     <p className="text-gray-600 text-sm mb-4">
-                      Adjust the width and height of your door. Custom sizes
-                      incur an additional charge of $200.
+                      Adjust the width and height of your door. Custom sizes incur an additional charge of $200.
                     </p>
 
                     <div className="bg-blue-50 p-3 rounded-md mb-6 flex items-start">
                       <Info className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
                       <p className="text-blue-800 text-xs">
-                        Standard door size is 36" × 80". Any deviation from this
-                        size is considered a custom door and will incur
-                        additional charges.
+                        Standard door size is 36" × 80". Any deviation from this size is considered a custom door and will incur additional charges.
                       </p>
                     </div>
 
@@ -531,10 +449,7 @@ const CustomizationForm = ({
                       {/* Width Slider */}
                       <div>
                         <div className="flex justify-between mb-2">
-                          <Label
-                            htmlFor="width"
-                            className="text-sm font-medium"
-                          >
+                          <Label htmlFor="width" className="text-sm font-medium">
                             Width: {customization.width}"
                           </Label>
                           <span className="text-xs text-gray-500">
@@ -547,9 +462,7 @@ const CustomizationForm = ({
                           max={48}
                           step={1}
                           value={[customization.width]}
-                          onValueChange={(value) =>
-                            handleChange("width", value[0])
-                          }
+                          onValueChange={(value) => handleChange("width", value[0])}
                           className="mb-6"
                         />
                         <div className="flex justify-between text-xs text-gray-500">
@@ -562,10 +475,7 @@ const CustomizationForm = ({
                       {/* Height Slider */}
                       <div>
                         <div className="flex justify-between mb-2">
-                          <Label
-                            htmlFor="height"
-                            className="text-sm font-medium"
-                          >
+                          <Label htmlFor="height" className="text-sm font-medium">
                             Height: {customization.height}"
                           </Label>
                           <span className="text-xs text-gray-500">
@@ -578,9 +488,7 @@ const CustomizationForm = ({
                           max={96}
                           step={1}
                           value={[customization.height]}
-                          onValueChange={(value) =>
-                            handleChange("height", value[0])
-                          }
+                          onValueChange={(value) => handleChange("height", value[0])}
                           className="mb-6"
                         />
                         <div className="flex justify-between text-xs text-gray-500">
@@ -594,9 +502,7 @@ const CustomizationForm = ({
 
                   {/* Hardware Selection */}
                   <div>
-                    <h3 className="text-lg font-medium mb-4">
-                      Hardware Finish
-                    </h3>
+                    <h3 className="text-lg font-medium mb-4">Hardware Finish</h3>
                     <RadioGroup
                       value={customization.hardware}
                       onValueChange={(value) => handleChange("hardware", value)}
@@ -606,7 +512,11 @@ const CustomizationForm = ({
                         <Label
                           key={hardware.id}
                           htmlFor={`hardware-${hardware.id}`}
-                          className={`flex items-start p-3 border rounded-lg cursor-pointer transition-all ${customization.hardware === hardware.id ? "border-amber-600 bg-amber-50" : "border-gray-200 hover:border-gray-300"}`}
+                          className={`flex items-start p-3 border rounded-lg cursor-pointer transition-all ${
+                            customization.hardware === hardware.id
+                              ? "border-amber-600 bg-amber-50"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
                         >
                           <RadioGroupItem
                             value={hardware.id}
