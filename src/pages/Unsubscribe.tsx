@@ -9,6 +9,8 @@ interface UnsubscribeState {
   email: string | null;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
 const Unsubscribe = () => {
   const [searchParams] = useSearchParams();
   const [state, setState] = useState<UnsubscribeState>({
@@ -36,7 +38,7 @@ const Unsubscribe = () => {
 
       try {
         const response = await fetch(
-          `/api/verify-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
+          `${API_URL}/api/verify-unsubscribe?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`
         );
         const data = await response.json();
 
@@ -55,6 +57,7 @@ const Unsubscribe = () => {
           }));
         }
       } catch (error) {
+        console.error('Verification error:', error);
         setState(prev => ({
           ...prev,
           isLoading: false,
@@ -73,7 +76,7 @@ const Unsubscribe = () => {
     try {
       setState(prev => ({ ...prev, isLoading: true }));
       
-      const response = await fetch('/api/unsubscribe', {
+      const response = await fetch(`${API_URL}/api/unsubscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,6 +103,7 @@ const Unsubscribe = () => {
         }));
       }
     } catch (error) {
+      console.error('Unsubscribe error:', error);
       setState(prev => ({
         ...prev,
         isLoading: false,
@@ -197,4 +201,4 @@ const Unsubscribe = () => {
   );
 };
 
-export default Unsubscribe; 
+export default Unsubscribe;

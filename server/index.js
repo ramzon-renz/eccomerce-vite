@@ -45,19 +45,30 @@ app.use('/api/subscribe', limiter); // Apply rate limiting to subscription endpo
 // Generate unsubscribe token
 const generateUnsubscribeToken = (email) => {
   const secret = process.env.EMAIL_SECRET || 'default-secret-key';
-  return crypto
+  console.log('Generating token for email:', email); // Debug log
+  const token = crypto
     .createHmac('sha256', secret)
     .update(email)
     .digest('hex');
+  console.log('Generated token:', token); // Debug log
+  return token;
 };
 
 // Verify unsubscribe token
 const verifyUnsubscribeToken = (email, token) => {
-  return token === generateUnsubscribeToken(email);
+  const expectedToken = generateUnsubscribeToken(email);
+  console.log('Token verification:', { 
+    email, 
+    providedToken: token, 
+    expectedToken,
+    matches: token === expectedToken 
+  }); // Debug log
+  return token === expectedToken;
 };
 
 // Email template
 const createEmailTemplate = (email) => {
+  const products =  `${process.env.FRONTEND_URL || 'http://localhost:5173'}/products`;
   const unsubscribeToken = generateUnsubscribeToken(email);
   const unsubscribeUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/unsubscribe?email=${encodeURIComponent(email)}&token=${unsubscribeToken}`;
   
@@ -230,7 +241,7 @@ const createEmailTemplate = (email) => {
       </div>
 
       <div style="text-align: center;">
-        <a href="https://yourwebsite.com/products" class="button">
+        <a href="${products}" class="button">
           Explore Our Collection
         </a>
       </div>
@@ -399,6 +410,9 @@ app.post('/api/unsubscribe', async (req, res) => {
       return res.status(403).json({ error: 'Invalid or expired unsubscribe token' });
     }
 
+    // First find the subscriber to get existing metadata
+    const existingSubscriber = await Subscriber.findOne({ email });
+    
     // Find and update subscriber
     const subscriber = await Subscriber.findOneAndUpdate(
       { email },
@@ -406,7 +420,7 @@ app.post('/api/unsubscribe', async (req, res) => {
         status: 'unsubscribed',
         unsubscribedAt: new Date(),
         metadata: {
-          ...subscriber?.metadata,
+          ...(existingSubscriber?.metadata || {}),
           unsubscribeReason: req.body.reason || 'Not specified'
         }
       },
@@ -448,20 +462,31 @@ app.post('/api/unsubscribe', async (req, res) => {
 
 // Verify unsubscribe token endpoint
 app.get('/api/verify-unsubscribe', async (req, res) => {
-  const { email, token } = req.query;
-  
-  if (!email || !token) {
-    return res.status(400).json({ error: 'Missing email or token' });
+  try {
+    const { email, token } = req.query;
+    
+    console.log('Verifying unsubscribe request:', { email, token }); // Debug log
+    
+    if (!email || !token) {
+      console.log('Missing parameters:', { email: !!email, token: !!token }); // Debug log
+      return res.status(400).json({ error: 'Missing email or token' });
+    }
+
+    const isValid = verifyUnsubscribeToken(email, token);
+    console.log('Token validation result:', isValid); // Debug log
+
+    const subscriber = isValid ? await Subscriber.findOne({ email }) : null;
+    console.log('Subscriber found:', !!subscriber); // Debug log
+
+    res.json({ 
+      isValid,
+      email,
+      status: subscriber?.status || 'not_found'
+    });
+  } catch (error) {
+    console.error('Verify unsubscribe error:', error);
+    res.status(500).json({ error: 'Failed to verify unsubscribe link' });
   }
-
-  const isValid = verifyUnsubscribeToken(email, token);
-  const subscriber = isValid ? await Subscriber.findOne({ email }) : null;
-
-  res.json({ 
-    isValid,
-    email,
-    status: subscriber?.status || 'not_found'
-  });
 });
 
 // Health check endpoint
@@ -479,4 +504,4 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Test the server by visiting: http://localhost:${PORT}/api/health`);
-}); 
+});
