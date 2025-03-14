@@ -6,8 +6,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useCart } from "@/context/CartContext";
-import { Send, Loader2, ShoppingCart, AlertCircle } from "lucide-react";
+import { Send, Loader2, ShoppingCart, AlertCircle, Trash2 } from "lucide-react";
 
 interface QuotationFormProps {
   onSubmitSuccess?: () => void;
@@ -17,6 +28,7 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
   const { toast } = useToast();
   const { cart, clearCart, removeFromCart, updateQuantity } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -299,13 +311,33 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
                       <div className="ml-3 flex-1">
                         <div className="flex justify-between items-start">
                           <h4 className="text-sm font-medium">{item.name}</h4>
-                          <button
-                            onClick={() => removeFromCart(item.id)}
-                            className="text-gray-400 hover:text-red-500 transition-colors p-1"
-                            aria-label="Remove item"
-                          >
-                            <AlertCircle className="h-4 w-4" />
-                          </button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <button
+                                className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                aria-label="Remove item"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Remove Item</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to remove {item.name} from your quote request? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-red-500 hover:bg-red-600"
+                                  onClick={() => removeFromCart(item.id)}
+                                >
+                                  Remove
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                         <div className="flex items-center mt-1 text-xs text-gray-500">
                           {item.material && <span>{item.material}</span>}
