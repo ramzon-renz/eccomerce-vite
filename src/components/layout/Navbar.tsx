@@ -48,10 +48,7 @@ const productCategories = [
     items: [
       { title: "Panel Doors", href: "/products?category=interior&type=panel" },
       { title: "Flush Doors", href: "/products?category=interior&type=flush" },
-      {
-        title: "French Doors",
-        href: "/products?category=interior&type=french",
-      },
+      { title: "French Doors", href: "/products?category=interior&type=french" },
       { title: "Barn Doors", href: "/products?category=interior&type=barn" },
     ],
   },
@@ -63,10 +60,7 @@ const productCategories = [
       { title: "Entry Doors", href: "/products?category=exterior&type=entry" },
       { title: "Patio Doors", href: "/products?category=exterior&type=patio" },
       { title: "Storm Doors", href: "/products?category=exterior&type=storm" },
-      {
-        title: "Security Doors",
-        href: "/products?category=exterior&type=security",
-      },
+      { title: "Security Doors", href: "/products?category=exterior&type=security" },
     ],
   },
   {
@@ -74,9 +68,9 @@ const productCategories = [
     href: "/customize",
     description: "Tailor-made doors crafted to your exact specifications",
     items: [
-      { title: "Design Your Door", href: "/customize" },
-      { title: "Wood Selection", href: "/customize?section=material" },
-      { title: "Hardware Options", href: "/customize?section=hardware" },
+      { title: "Select Material", href: "/customize?section=material" },
+      { title: "Set Dimensions", href: "/customize?section=dimensions" },
+      { title: "Glass Options", href: "/customize?section=glass" },
       { title: "Finishing Touches", href: "/customize?section=finish" },
     ],
   },

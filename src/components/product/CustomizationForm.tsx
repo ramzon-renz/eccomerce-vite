@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -6,10 +6,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Check, Info, Ruler, Palette, Grid3X3 } from "lucide-react";
+import { Check, Info, Ruler, Palette, Grid3X3, Boxes } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface CustomizationFormProps {
   productName?: string;
@@ -37,6 +37,8 @@ const CustomizationForm = ({
   const { addToCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get("section") || "material");
 
   const [customization, setCustomization] = useState<ProductCustomization>({
     material: "oak",
@@ -47,6 +49,20 @@ const CustomizationForm = ({
     hardware: "brass",
     additionalNotes: "",
   });
+
+  // Update active tab when URL changes
+  useEffect(() => {
+    const section = searchParams.get("section");
+    if (section && ["material", "finish", "glass", "dimensions"].includes(section)) {
+      setActiveTab(section);
+    }
+  }, [searchParams]);
+
+  // Update URL when tab changes
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setSearchParams({ section: value });
+  };
 
   const handleChange = (field: keyof ProductCustomization, value: any) => {
     setCustomization((prev) => ({
@@ -337,23 +353,23 @@ const CustomizationForm = ({
             Customize Your Door
           </h2>
           <form onSubmit={handleSubmit}>
-            <Tabs defaultValue="material" className="mb-8">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-8">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="material" className="flex items-center gap-1">
-                  <Grid3X3 className="h-4 w-4" />
+                  <Boxes className="h-4 w-4" />
                   <span className="hidden sm:inline">Material</span>
                 </TabsTrigger>
-                <TabsTrigger value="finish" className="flex items-center gap-1">
-                  <Palette className="h-4 w-4" />
-                  <span className="hidden sm:inline">Finish</span>
+                <TabsTrigger value="dimensions" className="flex items-center gap-1">
+                  <Ruler className="h-4 w-4" />
+                  <span className="hidden sm:inline">Dimensions</span>
                 </TabsTrigger>
                 <TabsTrigger value="glass" className="flex items-center gap-1">
                   <Grid3X3 className="h-4 w-4" />
                   <span className="hidden sm:inline">Glass</span>
                 </TabsTrigger>
-                <TabsTrigger value="dimensions" className="flex items-center gap-1">
-                  <Ruler className="h-4 w-4" />
-                  <span className="hidden sm:inline">Dimensions</span>
+                <TabsTrigger value="finish" className="flex items-center gap-1">
+                  <Palette className="h-4 w-4" />
+                  <span className="hidden sm:inline">Finish</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -396,96 +412,6 @@ const CustomizationForm = ({
                               : material.price > 0
                               ? `+$${material.price.toFixed(2)}`
                               : `-$${Math.abs(material.price).toFixed(2)}`}
-                          </div>
-                        </div>
-                      </Label>
-                    ))}
-                  </RadioGroup>
-                </div>
-              </TabsContent>
-
-              {/* Finish Selection */}
-              <TabsContent value="finish" className="pt-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Select Finish</h3>
-                  <p className="text-gray-600 text-sm">
-                    Choose the finish for your door. The finish affects both the appearance and durability of your door.
-                  </p>
-
-                  <RadioGroup
-                    value={customization.finish}
-                    onValueChange={(value) => handleChange("finish", value)}
-                    className="grid grid-cols-1 gap-4 mt-4"
-                  >
-                    {finishes.map((finish) => (
-                      <Label
-                        key={finish.id}
-                        htmlFor={`finish-${finish.id}`}
-                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
-                          customization.finish === finish.id
-                            ? "border-amber-600 bg-amber-50"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        <RadioGroupItem
-                          value={finish.id}
-                          id={`finish-${finish.id}`}
-                          className="mt-1"
-                        />
-                        <div className="ml-3">
-                          <div className="font-medium">{finish.name}</div>
-                          <div className="text-sm text-gray-600">
-                            {finish.description}
-                          </div>
-                          <div className="text-sm font-medium mt-1">
-                            {finish.price === 0
-                              ? "Included in base price"
-                              : `+$${finish.price.toFixed(2)}`}
-                          </div>
-                        </div>
-                      </Label>
-                    ))}
-                  </RadioGroup>
-                </div>
-              </TabsContent>
-
-              {/* Glass Selection */}
-              <TabsContent value="glass" className="pt-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Select Glass Type</h3>
-                  <p className="text-gray-600 text-sm">
-                    Choose the type of glass for your door. Glass panels can add light and visual interest to your door.
-                  </p>
-
-                  <RadioGroup
-                    value={customization.glassType}
-                    onValueChange={(value) => handleChange("glassType", value)}
-                    className="grid grid-cols-1 gap-4 mt-4"
-                  >
-                    {glassTypes.map((glass) => (
-                      <Label
-                        key={glass.id}
-                        htmlFor={`glass-${glass.id}`}
-                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
-                          customization.glassType === glass.id
-                            ? "border-amber-600 bg-amber-50"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        <RadioGroupItem
-                          value={glass.id}
-                          id={`glass-${glass.id}`}
-                          className="mt-1"
-                        />
-                        <div className="ml-3">
-                          <div className="font-medium">{glass.name}</div>
-                          <div className="text-sm text-gray-600">
-                            {glass.description}
-                          </div>
-                          <div className="text-sm font-medium mt-1">
-                            {glass.price === 0
-                              ? "Included in base price"
-                              : `+$${glass.price.toFixed(2)}`}
                           </div>
                         </div>
                       </Label>
@@ -602,6 +528,96 @@ const CustomizationForm = ({
                       ))}
                     </RadioGroup>
                   </div>
+                </div>
+              </TabsContent>
+
+              {/* Glass Selection */}
+              <TabsContent value="glass" className="pt-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Select Glass Type</h3>
+                  <p className="text-gray-600 text-sm">
+                    Choose the type of glass for your door. Glass panels can add light and visual interest to your door.
+                  </p>
+
+                  <RadioGroup
+                    value={customization.glassType}
+                    onValueChange={(value) => handleChange("glassType", value)}
+                    className="grid grid-cols-1 gap-4 mt-4"
+                  >
+                    {glassTypes.map((glass) => (
+                      <Label
+                        key={glass.id}
+                        htmlFor={`glass-${glass.id}`}
+                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
+                          customization.glassType === glass.id
+                            ? "border-amber-600 bg-amber-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
+                      >
+                        <RadioGroupItem
+                          value={glass.id}
+                          id={`glass-${glass.id}`}
+                          className="mt-1"
+                        />
+                        <div className="ml-3">
+                          <div className="font-medium">{glass.name}</div>
+                          <div className="text-sm text-gray-600">
+                            {glass.description}
+                          </div>
+                          <div className="text-sm font-medium mt-1">
+                            {glass.price === 0
+                              ? "Included in base price"
+                              : `+$${glass.price.toFixed(2)}`}
+                          </div>
+                        </div>
+                      </Label>
+                    ))}
+                  </RadioGroup>
+                </div>
+              </TabsContent>
+
+              {/* Finish Selection */}
+              <TabsContent value="finish" className="pt-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Select Finish</h3>
+                  <p className="text-gray-600 text-sm">
+                    Choose the finish for your door. The finish affects both the appearance and durability of your door.
+                  </p>
+
+                  <RadioGroup
+                    value={customization.finish}
+                    onValueChange={(value) => handleChange("finish", value)}
+                    className="grid grid-cols-1 gap-4 mt-4"
+                  >
+                    {finishes.map((finish) => (
+                      <Label
+                        key={finish.id}
+                        htmlFor={`finish-${finish.id}`}
+                        className={`flex items-start p-4 border rounded-lg cursor-pointer transition-all ${
+                          customization.finish === finish.id
+                            ? "border-amber-600 bg-amber-50"
+                            : "border-gray-200 hover:border-gray-300"
+                        }`}
+                      >
+                        <RadioGroupItem
+                          value={finish.id}
+                          id={`finish-${finish.id}`}
+                          className="mt-1"
+                        />
+                        <div className="ml-3">
+                          <div className="font-medium">{finish.name}</div>
+                          <div className="text-sm text-gray-600">
+                            {finish.description}
+                          </div>
+                          <div className="text-sm font-medium mt-1">
+                            {finish.price === 0
+                              ? "Included in base price"
+                              : `+$${finish.price.toFixed(2)}`}
+                          </div>
+                        </div>
+                      </Label>
+                    ))}
+                  </RadioGroup>
                 </div>
               </TabsContent>
             </Tabs>
