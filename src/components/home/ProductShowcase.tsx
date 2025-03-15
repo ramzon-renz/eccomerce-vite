@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 import FilterBar from "./FilterBar";
 import { Button } from "@/components/ui/button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import productData from "@/data/products.json";
 import type { ProductCardData, ProductData } from "@/types/product";
@@ -56,19 +56,31 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     type: "all",
   });
 
+  const [searchParams] = useSearchParams();
+
   const handleFilterChange = useCallback((newFilters: FilterOptions) => {
     setActiveFilters(newFilters);
   }, []);
 
   useEffect(() => {
-    // Initialize filters based on filterCategory prop
-    if (filterCategory) {
+    // Initialize filters based on filterCategory and type from URL
+    const category = searchParams.get("category");
+    const type = searchParams.get("type");
+
+    if (category) {
       setActiveFilters(prev => ({
         ...prev,
-        category: filterCategory.toLowerCase()
+        category: category.toLowerCase()
       }));
     }
-  }, [filterCategory]);
+
+    if (type) {
+      setActiveFilters(prev => ({
+        ...prev,
+        type: type.toLowerCase()
+      }));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let filtered = [...products];

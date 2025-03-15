@@ -169,22 +169,15 @@ const FilterContent: React.FC<{
           <SelectValue placeholder="Type" />
         </SelectTrigger>
         <SelectContent>
-          {filters.category === "interior" && (
-            <>
-              <SelectItem value="panel">Panel</SelectItem>
-              <SelectItem value="flush">Flush</SelectItem>
-              <SelectItem value="french">French</SelectItem>
-              <SelectItem value="barn">Barn</SelectItem>
-            </>
-          )}
-          {filters.category === "exterior" && (
-            <>
-              <SelectItem value="entry">Entry</SelectItem>
-              <SelectItem value="patio">Patio</SelectItem>
-              <SelectItem value="storm">Storm</SelectItem>
-              <SelectItem value="security">Security</SelectItem>
-            </>
-          )}
+          <SelectItem value="panel">Panel</SelectItem>
+          <SelectItem value="flush">Flush</SelectItem>
+          <SelectItem value="french">French</SelectItem>
+          <SelectItem value="barn">Barn</SelectItem>
+
+          <SelectItem value="entry">Entry</SelectItem>
+          <SelectItem value="patio">Patio</SelectItem>
+          <SelectItem value="storm">Storm</SelectItem>
+          <SelectItem value="security">Security</SelectItem>
         </SelectContent>
       </Select>
 
