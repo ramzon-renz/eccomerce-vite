@@ -24,6 +24,7 @@ interface FilterOptions {
   priceRange: string;
   category: string;
   type: string;
+  searchQuery?: string;
 }
 
 const ProductShowcase: React.FC<ProductShowcaseProps> = ({
@@ -54,6 +55,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     priceRange: "all",
     category: "all",
     type: "all",
+    searchQuery: searchQuery,
   });
 
   const [searchParams] = useSearchParams();
@@ -66,6 +68,7 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     // Initialize filters based on filterCategory and type from URL
     const category = searchParams.get("category");
     const type = searchParams.get("type");
+    const searchQuery = searchParams.get("search");
 
     if (category) {
       setActiveFilters(prev => ({
@@ -78,6 +81,13 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
       setActiveFilters(prev => ({
         ...prev,
         type: type.toLowerCase()
+      }));
+    }
+
+    if (searchQuery) {
+      setActiveFilters(prev => ({
+        ...prev,
+        searchQuery: searchQuery.toLowerCase()
       }));
     }
   }, [searchParams]);
@@ -96,6 +106,14 @@ const ProductShowcase: React.FC<ProductShowcaseProps> = ({
     if (activeFilters.type && activeFilters.type !== "all") {
       filtered = filtered.filter(product => 
         product.type.toLowerCase() === activeFilters.type.toLowerCase()
+      );
+    }
+
+    // Apply search query filter
+    if (activeFilters.searchQuery) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(activeFilters.searchQuery) || 
+        product.description.toLowerCase().includes(activeFilters.searchQuery)
       );
     }
 
