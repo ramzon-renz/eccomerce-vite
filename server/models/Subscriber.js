@@ -40,6 +40,10 @@ const subscriberSchema = new mongoose.Schema({
   },
   unsubscribedAt: {
     type: Date
+  },
+  unsubscribedReason: {
+    type: String,
+    trim: true
   }
 }, {
   timestamps: true,
@@ -54,7 +58,7 @@ subscriberSchema.pre('save', function(next) {
   next();
 });
 // Index for faster queries
-subscriberSchema.index({ email: 1 }, { unique: true });
+// subscriberSchema.index({ email: 1 }, { unique: true });
 subscriberSchema.index({ status: 1 });
 subscriberSchema.index({ subscriptionDate: -1 });
 

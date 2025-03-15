@@ -155,10 +155,8 @@ const FilterContent: React.FC<{
           <SelectValue placeholder="Category" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="doors">Doors</SelectItem>
-          <SelectItem value="windows">Windows</SelectItem>
-          <SelectItem value="flooring">Flooring</SelectItem>
-          <SelectItem value="furniture">Furniture</SelectItem>
+          <SelectItem value="interior">Interior</SelectItem>
+          <SelectItem value="exterior">Exterior</SelectItem>
         </SelectContent>
       </Select>
 

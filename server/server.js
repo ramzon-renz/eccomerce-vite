@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 5001;
 
 // MongoDB connection with retry
 const connectWithRetry = () => {
-  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.connect(process.env.MONGODB_URI)
     .then(() => logger.info('MongoDB connected successfully'))
     .catch((err) => {
       logger.error('MongoDB connection failed:', err);
@@ -106,13 +106,18 @@ const generateUnsubscribeToken = (email) => {
     .createHmac('sha256', secret)
     .update(email)
     .digest('hex');
+  
+  logger.info(`Generated unsubscribe token for ${email}: ${token}`);
   return token;
 };
 
 // Verify unsubscribe token
 const verifyUnsubscribeToken = (email, token) => {
   const expectedToken = generateUnsubscribeToken(email);
-  return token === expectedToken;
+  const isValid = token === expectedToken;
+  
+  logger.info(`Verifying unsubscribe token for ${email}. Expected: ${expectedToken}, Provided: ${token}, Valid: ${isValid}`);
+  return isValid;
 };
 
 const createEmailTemplate = (email, firstName) => {
@@ -402,26 +407,32 @@ app.patch('/api/subscribe/:email/preferences', async (req, res) => {
 
 // Unsubscribe endpoint
 app.post('/api/verify-unsubscribe', async (req, res) => {
-  const { email, token } = req.body;
+  const { email, token, reason } = req.body;  // Accept reason from request
+
+  logger.info(`Received unsubscribe request for email: ${email} with token: ${token}`);
 
   // Verify the unsubscribe token
   if (!verifyUnsubscribeToken(email, token)) {
+    logger.warn(`Invalid unsubscribe token for email: ${email}`); // Log invalid token attempt
     return res.status(400).json({ error: 'Invalid unsubscribe token' });
   }
 
   try {
-    // Update subscriber status to 'unsubscribed'
-    const subscriber = await Subscriber.findOneAndUpdate(
-      { email },
-      { status: 'unsubscribed' },
-      { new: true }
-    );
-
+    // Check if the subscriber exists before unsubscribing
+    const subscriber = await Subscriber.findOne({ email });
     if (!subscriber) {
+      logger.warn(`Subscriber not found for email: ${email}`); // Log if subscriber is not found
       return res.status(404).json({ error: 'Subscriber not found' });
     }
 
-    res.json({ message: 'Successfully unsubscribed', status: subscriber.status });
+    // Update subscriber status to 'unsubscribed' and save the reason
+    const updatedSubscriber = await Subscriber.findOneAndUpdate(
+      { email },
+      { status: 'unsubscribed', unsubscribedAt: new Date(), unsubscribedReason: reason },  // Save reason
+      { new: true }
+    );
+
+    res.json({ message: 'Successfully unsubscribed', status: updatedSubscriber.status });
   } catch (error) {
     logger.error('Unsubscribe error:', error);
     res.status(500).json({ error: 'Failed to unsubscribe. Please try again later.' });

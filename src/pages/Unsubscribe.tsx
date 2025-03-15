@@ -27,11 +27,11 @@ const Unsubscribe = () => {
         const response = await fetch(`${API_URL}/api/verify-unsubscribe?email=${encodeURIComponent(emailParam)}&token=${encodeURIComponent(token)}`);
         const data = await response.json();
 
-        if (data.isValid) {
+        if (response.ok) {
           setEmail(emailParam);
           setIsValid(true);
         } else {
-          setError('Invalid or expired unsubscribe link.');
+          setError(data.error || 'Invalid or expired unsubscribe link.');
         }
       } catch {
         setError('Failed to verify unsubscribe link. Please try again later.');
@@ -47,21 +47,22 @@ const Unsubscribe = () => {
     const token = searchParams.get('token');
   
     try {
-      const response = await fetch(`${API_URL}/api/verify-unsubscribe?email=${encodeURIComponent(emailParam)}&token=${encodeURIComponent(token)}`, {
+      const response = await fetch(`${API_URL}/api/verify-unsubscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailParam, token, reason: reason.trim() || 'Not specified' }),
+        body: JSON.stringify({ email: emailParam, token, reason }),
       });
   
       if (response.ok) {
         const data = await response.json();
         setIsUnsubscribed(true);
-        console.log('Unsubscribed successfully, reason:', data.reason);
+        console.log('Unsubscribed successfully, reason:', reason);
       } else {
         const data = await response.json();
         setError(data.error || 'Failed to unsubscribe. Please try again later.');
       }
-    } catch {
+    } catch (error) {
+      console.error('Error during unsubscribe:', error);
       setError('Failed to unsubscribe. Please try again later.');
     }
     setIsLoading(false);
