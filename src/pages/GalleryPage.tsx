@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import productData from "@/data/products.json";
 import type { ProductData } from "@/types/product";
-
 interface GalleryImage {
   id: string;
   src: string;
@@ -142,31 +141,8 @@ const GalleryPage = () => {
             </Tabs>
           </div>
 
-          {/* Call to Action */}
-          <div className="mt-8 sm:mt-12 md:mt-16 text-center px-4">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-4">
-              Can't find what you're looking for?
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto">
-              We specialize in custom doors tailored to your exact
-              specifications.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <Button
-                className="bg-amber-600 hover:bg-amber-700 text-white text-sm sm:text-base"
-                onClick={() => navigate("/customize")}
-              >
-                Design Your Custom Door
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => navigate("/contact")}
-                className="text-sm sm:text-base"
-              >
-                Contact Our Team
-              </Button>
-            </div>
-          </div>
+
+
         </div>
       </main>
 

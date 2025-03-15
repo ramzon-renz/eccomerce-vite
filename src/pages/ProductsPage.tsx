@@ -113,9 +113,9 @@ const ProductsPage = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 className="bg-amber-600 hover:bg-amber-700 text-white"
-                onClick={() => navigate("/quote")}
+                onClick={() => navigate("/customize")}
               >
-                Request Custom Quote
+                Design Your Custom Door
               </Button>
               <Button variant="outline" onClick={() => navigate("/contact")}>
                 Contact Our Team
