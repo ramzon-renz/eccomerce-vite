@@ -462,6 +462,42 @@ app.get('/api/verify-unsubscribe', async (req, res) => {
   }
 });
 
+// Add this endpoint in your server setup
+app.post('/api/contact', async (req, res) => {
+    const { name, email, phone, subject, message } = req.body;
+
+    // Validate the input
+    if (!name || !email || !message) {
+        return res.status(400).json({ error: 'Name, email, and message are required.' });
+    }
+
+    // Set up the email transporter (if not already set up)
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+
+    // Send the email
+    try {
+        await transporter.sendMail({
+            from: `"${name}" <${email}>`,
+            to: process.env.EMAIL_USER, // Your email address
+            subject: subject || 'New Contact Form Submission',
+            text: `You have a new message from ${name} (${email}, ${phone}):\n\n${message}`,
+        });
+
+        res.status(200).json({ message: 'Message sent successfully!' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send message. Please try again later.' });
+    }
+});
+
 // Start server
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
