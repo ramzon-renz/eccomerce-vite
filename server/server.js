@@ -498,6 +498,43 @@ app.post('/api/contact', async (req, res) => {
     }
 });
 
+app.post('/api/send-quotation', async (req, res) => {
+    const { formData, orderSummary, subtotal } = req.body;
+
+    // Validate the input
+    if (!formData.email || !formData.firstName || !formData.lastName) {
+        return res.status(400).json({ error: 'Name and email are required.' });
+    }
+
+    const orderDetails = orderSummary.map(item => 
+        `${item.name} (Quantity: ${item.quantity}) - $${item.total}`
+    ).join('\n');
+
+    const emailContent = `
+        <h1>Quotation Request</h1>
+        <p>Dear ${formData.firstName} ${formData.lastName},</p>
+        <p>Thank you for your quotation request. Here are the details:</p>
+        <h2>Order Summary</h2>
+        <pre>${orderDetails}</pre>
+        <h3>Subtotal: $${subtotal}</h3>
+        <p>We will contact you shortly with a detailed quote.</p>
+    `;
+
+    try {
+        await transporter.sendMail({
+            from: `"Artisan Wooden Doors" <${process.env.EMAIL_USER}>`,
+            to: formData.email,
+            subject: 'Your Quotation Request',
+            html: emailContent,
+        });
+
+        res.status(200).json({ message: 'Quotation email sent successfully.' });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Failed to send quotation email.' });
+    }
+});
+
 // Start server
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);

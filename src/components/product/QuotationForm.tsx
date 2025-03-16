@@ -51,34 +51,65 @@ const QuotationForm = ({ onSubmitSuccess = () => {} }: QuotationFormProps) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Quotation Request Sent",
-        description: "Thank you for your request. Our team will contact you shortly with a detailed quote.",
-      });
-      clearCart();
-      onSubmitSuccess();
-      // Reset form
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        city: "",
-        state: "",
-        zipCode: "",
-        installationRequired: "no",
-        preferredContactMethod: "email",
-        additionalNotes: "",
-      });
-    }, 1500);
+    const orderSummary = cart.map(item => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+        total: (item.price * item.quantity).toFixed(2),
+    }));
+
+    const emailData = {
+        formData,
+        orderSummary,
+        subtotal: subtotal.toFixed(2),
+    };
+
+    try {
+        const response = await fetch('http://localhost:5001/api/send-quotation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(emailData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to send quotation');
+        }
+
+        toast({
+            title: "Quotation Request Sent",
+            description: "Thank you for your request. Our team will contact you shortly with a detailed quote.",
+        });
+        clearCart();
+        onSubmitSuccess();
+        // Reset form
+        setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            address: "",
+            city: "",
+            state: "",
+            zipCode: "",
+            installationRequired: "no",
+            preferredContactMethod: "email",
+            additionalNotes: "",
+        });
+    } catch (error) {
+        toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+        });
+    } finally {
+        setIsSubmitting(false);
+    }
   };
 
   const subtotal = cart.reduce(
