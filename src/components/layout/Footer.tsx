@@ -76,6 +76,7 @@ const Footer = ({
       toast.success('Successfully subscribed to newsletter!');
       setEmailInput("");
     } catch (error) {
+      console.error('Subscription error:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to subscribe');
     } finally {
       setIsLoading(false);

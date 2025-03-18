@@ -1,0 +1,251 @@
+/* Email Template Styles */
+:root {
+  --primary-color: #78350f;
+  --secondary-color: #92400e;
+  --text-color: #1f2937;
+  --light-bg: #fafafa;
+  --border-color: #e5e7eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #374151;
+  background-color: #f3f4f6;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.content {
+  padding: 40px 30px;
+  background-color: #fff;
+}
+
+.content h2 {
+  color: #1f2937;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.content p {
+  margin-bottom: 20px;
+  color: #4b5563;
+  font-size: 16px;
+}
+
+.features {
+  background-color: #f8fafc;
+  border-radius: 6px;
+  padding: 20px 25px;
+  margin: 25px 0;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features li {
+  padding: 10px 0;
+  padding-left: 25px;
+  position: relative;
+  color: #4b5563;
+}
+
+.features li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #d97706;
+  font-weight: bold;
+}
+
+.promo-code {
+  background-color: #fffbeb;
+  border: 1px dashed #d97706;
+  border-radius: 6px;
+  padding: 15px;
+  text-align: center;
+  margin: 25px 0;
+}
+
+.promo-code strong {
+  color: #92400e;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.button {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  padding: 14px 30px;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  margin: 20px 0;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.social-links {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 30px;
+}
+
+.social-links a {
+  color: #6b7280;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #6b7280;
+  font-size: 13px;
+  background-color: #f8fafc;
+  border-radius: 0 0 8px 8px;
+}
+
+.footer a {
+  color: #d97706;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 24px;
+  }
+  .content {
+    padding: 30px 20px;
+  }
+}
+
+.quote-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.quote-number {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.customer-details,
+.project-details,
+.order-summary {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--light-bg);
+  border-radius: 8px;
+}
+
+.detail-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.detail-group {
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.label {
+  display: block;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.value {
+  color: var(--text-color);
+  display: block;
+  margin: 0.25rem 0;
+}
+
+.order-items {
+  margin-top: 1rem;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-total {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--border-color);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.next-steps {
+  background: #fff8f1;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--secondary-color);
+}
+
+.next-steps ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.next-steps li {
+  margin: 0.5rem 0;
+  color: var(--text-color);
+}
+
+.footer-note {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 1rem;
+}

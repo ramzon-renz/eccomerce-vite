@@ -24,7 +24,11 @@ const Unsubscribe = () => {
       }
 
       try {
-        const response = await fetch(`${API_URL}/api/verify-unsubscribe?email=${encodeURIComponent(emailParam)}&token=${encodeURIComponent(token)}`);
+        const response = await fetch(`${API_URL}/api/verify-unsubscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailParam, token }),
+        });
         const data = await response.json();
 
         if (response.ok) {

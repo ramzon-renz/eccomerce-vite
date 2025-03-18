@@ -62,4 +62,5 @@ subscriberSchema.pre('save', function(next) {
 subscriberSchema.index({ status: 1 });
 subscriberSchema.index({ subscriptionDate: -1 });
 
-export default mongoose.model('Subscriber', subscriberSchema);
+const Subscriber = mongoose.model('Subscriber', subscriberSchema);
+export default Subscriber;
